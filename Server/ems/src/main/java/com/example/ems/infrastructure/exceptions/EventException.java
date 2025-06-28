@@ -1,0 +1,14 @@
+package com.example.ems.infrastructure.exceptions;
+
+import com.example.ems.infrastructure.constant.executioncode.ExecutionCode;
+import lombok.Getter;
+
+@Getter
+public class EventException extends RuntimeException {
+    private final transient ExecutionCode executionCode;
+
+    public EventException(ExecutionCode executionCode) {
+        super(executionCode.getMessage());
+        this.executionCode = executionCode;
+    }
+}

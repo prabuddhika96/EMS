@@ -23,6 +23,14 @@ public class GlobalExceptionHandler {
         ).getBody();
     }
 
+    @ExceptionHandler(EventException.class)
+    public ApiCommonResponse<Object> handleEventException(EventException ex) {
+        return ApiCommonResponse.create(
+                ex.getExecutionCode(),
+                null
+        ).getBody();
+    }
+
     @ExceptionHandler(Exception.class)
     public ApiCommonResponse<Object> handleException(Exception ex) {
         return ApiCommonResponse.create(
