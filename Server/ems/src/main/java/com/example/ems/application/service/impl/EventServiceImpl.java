@@ -10,6 +10,8 @@ import com.example.ems.infrastructure.utli.LoggingUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Service
 public class EventServiceImpl implements EventService {
@@ -21,4 +23,11 @@ public class EventServiceImpl implements EventService {
         logger.info("Creating event with request: " + createEventRequest);
         return eventRepository.createEvent(createEventRequest, currentUser);
     }
+
+    @Override
+    public Event updateEvent(UUID eventId, CreateEventRequest updateRequest, CustomUserDetails currentUser) {
+        logger.info("Updating event with ID: " + eventId);
+        return eventRepository.updateEvent(eventId, updateRequest, currentUser);
+    }
+
 }

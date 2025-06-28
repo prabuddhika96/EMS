@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import static com.example.ems.infrastructure.mapper.EventMapper.createEventRequestToEntity;
@@ -38,9 +39,47 @@ public class EventRepositoryImpl implements EventRepository {
                     .build());
             EventEntity savedEventEntity = springDataEventRepository.save(eventEntity);
             return toDomain(savedEventEntity);
-        }catch (Exception e) {
+        } catch (EventException e) {
+            throw e;
+        } catch (Exception e) {
             logger.error("Error saving event: " + e.getMessage());
             throw new EventException(EventExecutionCode.EVENT_CREATION_FAILED);
         }
     }
+
+    @Override
+    public Event updateEvent(UUID eventId, CreateEventRequest updateRequest, CustomUserDetails currentUser) {
+        try {
+            logger.info("Updating event with ID: " + eventId + " by user: " + currentUser.getUsername());
+            EventEntity existing = springDataEventRepository.findById(eventId)
+                    .orElseThrow(() -> new EventException(EventExecutionCode.EVENT_NOT_FOUND));
+
+            boolean isHost = existing.getUser().getId().equals(currentUser.getUserId());
+            boolean isAdmin = currentUser.getAuthorities().stream()
+                    .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+
+            if (!isHost && !isAdmin) {
+                logger.error("User: " + currentUser.getUsername() + " is not authorized to update event with ID: " + eventId);
+                throw new EventException(EventExecutionCode.EVENT_UPDATE_FORBIDDEN);
+            }
+
+            existing.setTitle(updateRequest.title());
+            existing.setDescription(updateRequest.description());
+            existing.setStartTime(updateRequest.startTime());
+            existing.setEndTime(updateRequest.endTime());
+            existing.setLocation(updateRequest.location());
+            existing.setVisibility(updateRequest.visibility());
+            existing.setUpdatedAt(Instant.now());
+
+            EventEntity saved = springDataEventRepository.save(existing);
+            return toDomain(saved);
+
+        } catch (EventException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error updating event: " + e.getMessage());
+            throw new EventException(EventExecutionCode.EVENT_UPDATE_FAILED);
+        }
+    }
+
 }

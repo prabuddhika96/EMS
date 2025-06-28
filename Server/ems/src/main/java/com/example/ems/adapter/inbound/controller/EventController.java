@@ -11,10 +11,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/events")
@@ -31,4 +35,17 @@ public class EventController {
         return ApiCommonResponse.create(EventExecutionCode.EVENT_CREATED_SUCCESS,
                 eventService.createEvent(createEventRequest, currentUser));
     }
+
+    @PutMapping("/update/{eventId}")
+    public ResponseEntity<ApiCommonResponse<Event>> updateEvent(
+            @PathVariable UUID eventId,
+            @RequestBody @Valid CreateEventRequest updateRequest,
+            @AuthenticationPrincipal CustomUserDetails currentUser
+    ) {
+        logger.info("Update request for eventId: " + eventId + ", by userId: " + currentUser.getUserId());
+
+        return ApiCommonResponse.create(EventExecutionCode.EVENT_UPDATED_SUCCESS,
+                eventService.updateEvent(eventId, updateRequest, currentUser));
+    }
+
 }
