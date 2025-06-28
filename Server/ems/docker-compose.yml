@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: ems-db
+    restart: always
+    ports:
+      - "6902:5432"
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: EMS_DB
+    volumes:
+      - ./docker/data:/var/lib/postgresql/data
+      - ./docker/scripts/dev/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ems_network
+
+volumes:
+  pgdata:
+
+networks:
+  ems_network:
+    driver: bridge
