@@ -1,6 +1,7 @@
 package com.example.ems.application.service.impl;
 
 import com.example.ems.application.dto.request.CreateEventRequest;
+import com.example.ems.application.dto.request.EventFilterRequest;
 import com.example.ems.application.repository.EventRepository;
 import com.example.ems.application.service.EventService;
 import com.example.ems.domain.model.Event;
@@ -8,6 +9,8 @@ import com.example.ems.infrastructure.mapper.EventMapper;
 import com.example.ems.infrastructure.security.userdetails.CustomUserDetails;
 import com.example.ems.infrastructure.utli.LoggingUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -36,5 +39,9 @@ public class EventServiceImpl implements EventService {
         eventRepository.deleteEvent(eventId, currentUser);
     }
 
+    @Override
+    public Page<Event> filterEvents(EventFilterRequest filterRequest, Pageable pageable) {
+        return eventRepository.filterEvents(filterRequest, pageable);
+    }
 
 }

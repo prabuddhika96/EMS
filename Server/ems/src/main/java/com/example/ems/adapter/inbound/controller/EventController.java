@@ -2,6 +2,7 @@ package com.example.ems.adapter.inbound.controller;
 
 import com.example.ems.adapter.inbound.util.ApiCommonResponse;
 import com.example.ems.application.dto.request.CreateEventRequest;
+import com.example.ems.application.dto.request.EventFilterRequest;
 import com.example.ems.application.service.EventService;
 import com.example.ems.domain.model.Event;
 import com.example.ems.infrastructure.constant.executioncode.EventExecutionCode;
@@ -9,9 +10,14 @@ import com.example.ems.infrastructure.security.userdetails.CustomUserDetails;
 import com.example.ems.infrastructure.utli.LoggingUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -60,6 +66,18 @@ public class EventController {
 
         return ApiCommonResponse.create(EventExecutionCode.EVENT_DELETED_SUCCESS, null);
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<ApiCommonResponse<Page<Event>>> filterEvents(
+            @ModelAttribute EventFilterRequest filterRequest,
+            @PageableDefault(page = 0, size = 10) Pageable pageable
+    ) {
+        logger.info("Filtering events with request: " + filterRequest + ", pageable: " + pageable);
+        Page<Event> eventsPage = eventService.filterEvents(filterRequest, pageable);
+
+        return ApiCommonResponse.create(EventExecutionCode.EVENT_LIST_FETCHED_SUCCESS, eventsPage);
+    }
+
 
 
 }

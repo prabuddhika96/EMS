@@ -3,24 +3,33 @@ package com.example.ems.adapter.outbound.postgres.repository;
 import com.example.ems.adapter.outbound.postgres.entity.EventEntity;
 import com.example.ems.adapter.outbound.postgres.entity.UserEntity;
 import com.example.ems.application.dto.request.CreateEventRequest;
+import com.example.ems.application.dto.request.EventFilterRequest;
 import com.example.ems.application.repository.EventRepository;
 import com.example.ems.domain.model.Event;
 import com.example.ems.infrastructure.constant.executioncode.EventExecutionCode;
 import com.example.ems.infrastructure.exceptions.EventException;
+import com.example.ems.infrastructure.mapper.EventMapper;
 import com.example.ems.infrastructure.security.userdetails.CustomUserDetails;
 import com.example.ems.infrastructure.utli.LoggingUtil;
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static com.example.ems.infrastructure.mapper.EventMapper.createEventRequestToEntity;
 import static com.example.ems.infrastructure.mapper.EventMapper.toDomain;
 
-interface SpringDataEventRepository extends JpaRepository<EventEntity, UUID> {
+interface SpringDataEventRepository extends JpaRepository<EventEntity, UUID>, JpaSpecificationExecutor<EventEntity> {
 }
+
 
 @Repository
 @RequiredArgsConstructor
@@ -91,6 +100,39 @@ public class EventRepositoryImpl implements EventRepository {
             throw new EventException(EventExecutionCode.EVENT_DELETION_FAILED);
         }
     }
+
+    @Override
+    public Page<Event> filterEvents(EventFilterRequest filterRequest, Pageable pageable) {
+        try {
+            Page<EventEntity> entityPage = springDataEventRepository.findAll((root, query, cb) -> {
+                List<Predicate> predicates = new ArrayList<>();
+
+                if (filterRequest.startDate() != null) {
+                    predicates.add(cb.greaterThanOrEqualTo(root.get("startTime"), filterRequest.startDate()));
+                }
+
+                if (filterRequest.endDate() != null) {
+                    predicates.add(cb.lessThanOrEqualTo(root.get("endTime"), filterRequest.endDate()));
+                }
+
+                if (filterRequest.location() != null && !filterRequest.location().isBlank()) {
+                    predicates.add(cb.like(cb.lower(root.get("location")), "%" + filterRequest.location().toLowerCase() + "%"));
+                }
+
+                if (filterRequest.visibility() != null) {
+                    predicates.add(cb.equal(root.get("visibility"), filterRequest.visibility()));
+                }
+
+                return cb.and(predicates.toArray(new Predicate[0]));
+            }, pageable);
+
+            return entityPage.map(EventMapper::toDomain);
+        } catch (Exception e) {
+            logger.error("Error filtering events: " + e.getMessage());
+            throw new EventException(EventExecutionCode.EVENT_FILTER_FAILED);
+        }
+    }
+
 
 
     private EventEntity getEventEntity(UUID eventId, CustomUserDetails currentUser, String action) {
