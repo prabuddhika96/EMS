@@ -31,6 +31,14 @@ public class GlobalExceptionHandler {
         ).getBody();
     }
 
+    @ExceptionHandler(AttendanceException.class)
+    public ApiCommonResponse<Object> handleAttendenceException(AttendanceException ex) {
+        return ApiCommonResponse.create(
+                ex.getExecutionCode(),
+                null
+        ).getBody();
+    }
+
     @ExceptionHandler(Exception.class)
     public ApiCommonResponse<Object> handleException(Exception ex) {
         return ApiCommonResponse.create(
