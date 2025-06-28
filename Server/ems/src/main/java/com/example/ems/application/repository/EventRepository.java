@@ -17,4 +17,6 @@ public interface EventRepository {
     void deleteEvent(UUID eventId, CustomUserDetails currentUser);
 
     Page<Event> filterEvents(EventFilterRequest filterRequest, Pageable pageable);
+
+    Page<Event> findUpcomingEvents(Pageable pageable);
 }

@@ -19,7 +19,8 @@ public enum EventExecutionCode implements ExecutionCode{
     EVENT_DELETION_FAILED(3008, "Event deletion failed", HttpStatus.BAD_REQUEST),
     EVENT_FETCH_FAILED(3009, "Event fetch failed", HttpStatus.BAD_REQUEST),
     EVENT_UPDATE_FORBIDDEN(3010, "Event update forbidden", HttpStatus.FORBIDDEN),
-    EVENT_FILTER_FAILED(3011, "Event filter failed", HttpStatus.BAD_REQUEST),;
+    EVENT_FILTER_FAILED(3011, "Event filter failed", HttpStatus.BAD_REQUEST),
+    EVENTS_FETCH_FAILED(3012, "Events fetch failed", HttpStatus.BAD_REQUEST);
 
     private final int code;
     private final String message;

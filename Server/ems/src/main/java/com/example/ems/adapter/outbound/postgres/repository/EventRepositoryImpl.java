@@ -28,6 +28,7 @@ import static com.example.ems.infrastructure.mapper.EventMapper.createEventReque
 import static com.example.ems.infrastructure.mapper.EventMapper.toDomain;
 
 interface SpringDataEventRepository extends JpaRepository<EventEntity, UUID>, JpaSpecificationExecutor<EventEntity> {
+    Page<EventEntity> findByStartTimeAfter(Instant now, Pageable pageable);
 }
 
 
@@ -130,6 +131,18 @@ public class EventRepositoryImpl implements EventRepository {
         } catch (Exception e) {
             logger.error("Error filtering events: " + e.getMessage());
             throw new EventException(EventExecutionCode.EVENT_FILTER_FAILED);
+        }
+    }
+
+    @Override
+    public Page<Event> findUpcomingEvents(Pageable pageable) {
+        try {
+            Instant now = Instant.now();
+            Page<EventEntity> entityPage = springDataEventRepository.findByStartTimeAfter(now, pageable);
+            return entityPage.map(EventMapper::toDomain);
+        } catch (Exception e) {
+            logger.error("Error fetching upcoming events: " + e.getMessage());
+            throw new EventException(EventExecutionCode.EVENTS_FETCH_FAILED);
         }
     }
 

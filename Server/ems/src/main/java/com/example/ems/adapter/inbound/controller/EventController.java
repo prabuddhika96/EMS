@@ -11,6 +11,7 @@ import com.example.ems.infrastructure.utli.LoggingUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
@@ -78,6 +80,16 @@ public class EventController {
         return ApiCommonResponse.create(EventExecutionCode.EVENT_LIST_FETCHED_SUCCESS, eventsPage);
     }
 
+    @GetMapping("/upcoming")
+    public ResponseEntity<ApiCommonResponse<Page<Event>>> getUpcomingEvents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Event> upcomingEvents = eventService.getUpcomingEvents(pageable);
+
+        return ApiCommonResponse.create(EventExecutionCode.EVENT_LIST_FETCHED_SUCCESS, upcomingEvents);
+    }
 
 
 }

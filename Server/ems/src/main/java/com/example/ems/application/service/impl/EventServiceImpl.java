@@ -44,4 +44,11 @@ public class EventServiceImpl implements EventService {
         return eventRepository.filterEvents(filterRequest, pageable);
     }
 
+    @Override
+    public Page<Event> getUpcomingEvents(Pageable pageable) {
+        logger.info("Fetching upcoming events...");
+        return eventRepository.findUpcomingEvents(pageable);
+    }
+
+
 }

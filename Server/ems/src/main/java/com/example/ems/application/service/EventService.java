@@ -19,4 +19,5 @@ public interface EventService {
 
     Page<Event> filterEvents(EventFilterRequest filterRequest, Pageable pageable);
 
+    Page<Event> getUpcomingEvents(Pageable pageable);
 }
