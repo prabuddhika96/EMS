@@ -19,7 +19,7 @@ import java.util.UUID;
 
 interface SpringDataAttendanceRepository extends JpaRepository<AttendanceEntity, Integer> {
     Optional<AttendanceEntity> findByEventIdAndUserId(UUID eventId, UUID userId);
-    AttendanceEntity findByUserIdAndEventId(UUID userId, UUID eventId);
+    Optional<AttendanceEntity> findByUserIdAndEventId(UUID userId, UUID eventId);
 }
 
 @Repository
@@ -51,9 +51,14 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
             EventEntity event = entityManager.getReference(EventEntity.class, eventId);
             UserEntity user = entityManager.getReference(UserEntity.class, userId);
 
-            AttendanceEntity existing = springDataAttendanceRepository.findByUserIdAndEventId(userId, eventId);
-            if (existing != null) {
-                throw new AttendanceException(AttendenceExecutionCode.USER_ALREADY_ATTENDING_EVENT);
+            Optional<AttendanceEntity> optionalAttendence = springDataAttendanceRepository.findByUserIdAndEventId(userId, eventId);
+            if (optionalAttendence.isPresent()) {
+                AttendanceEntity existing = optionalAttendence.get();
+                logger.info(String.format("Updating attendance status for userId: %s and eventId: %s", userId, eventId));
+                existing.setStatus(status);
+                existing.setRespondedAt(Instant.now());
+                springDataAttendanceRepository.save(existing);
+                return;
             }
 
             AttendanceEntity attendance = AttendanceEntity.builder()
