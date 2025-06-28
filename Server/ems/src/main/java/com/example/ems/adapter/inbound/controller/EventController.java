@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -91,5 +92,24 @@ public class EventController {
         return ApiCommonResponse.create(EventExecutionCode.EVENT_LIST_FETCHED_SUCCESS, upcomingEvents);
     }
 
+    @GetMapping("/user/{type}")
+    public ResponseEntity<ApiCommonResponse<List<Event>>> getUserEventsByType(
+            @PathVariable String type,
+            @AuthenticationPrincipal CustomUserDetails currentUser) {
+
+        List<Event> events;
+
+        switch (type.toLowerCase()) {
+            case "hosting" -> events = eventService.getEventsHostedByUser(currentUser.getUserId());
+            case "attending" -> events = eventService.getEventsAttendedByUser(currentUser.getUserId());
+            default -> throw new IllegalArgumentException("Invalid type. Use 'hosting' or 'attending'");
+        }
+
+        if( events.isEmpty()) {
+            return ApiCommonResponse.create(EventExecutionCode.NO_EVENTS_FOUND, List.of());
+        } else {
+            return ApiCommonResponse.create(EventExecutionCode.EVENT_LIST_FETCHED_SUCCESS, events);
+        }
+    }
 
 }

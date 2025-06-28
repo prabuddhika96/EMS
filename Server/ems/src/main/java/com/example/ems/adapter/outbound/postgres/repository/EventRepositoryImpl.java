@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
@@ -29,6 +30,10 @@ import static com.example.ems.infrastructure.mapper.EventMapper.toDomain;
 
 interface SpringDataEventRepository extends JpaRepository<EventEntity, UUID>, JpaSpecificationExecutor<EventEntity> {
     Page<EventEntity> findByStartTimeAfter(Instant now, Pageable pageable);
+    List<EventEntity> findByUserId(UUID userId);
+
+    @Query("SELECT e FROM EventEntity e JOIN e.attendances a WHERE a.user.id = :userId")
+    List<EventEntity> findEventsUserIsAttending(UUID userId);
 }
 
 
@@ -146,7 +151,17 @@ public class EventRepositoryImpl implements EventRepository {
         }
     }
 
+    @Override
+    public List<Event> findEventsHostedByUser(UUID userId) {
+        List<EventEntity> entities = springDataEventRepository.findByUserId(userId);
+        return entities.stream().map(EventMapper::toDomain).toList();
+    }
 
+    @Override
+    public List<Event> findEventsAttendedByUser(UUID userId) {
+        List<EventEntity> entities = springDataEventRepository.findEventsUserIsAttending(userId);
+        return entities.stream().map(EventMapper::toDomain).toList();
+    }
 
     private EventEntity getEventEntity(UUID eventId, CustomUserDetails currentUser, String action) {
         EventEntity existing = springDataEventRepository.findById(eventId)

@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface EventService {
@@ -20,4 +21,9 @@ public interface EventService {
     Page<Event> filterEvents(EventFilterRequest filterRequest, Pageable pageable);
 
     Page<Event> getUpcomingEvents(Pageable pageable);
+
+    List<Event> getEventsHostedByUser(UUID userId);
+
+    List<Event> getEventsAttendedByUser(UUID userId);
+
 }

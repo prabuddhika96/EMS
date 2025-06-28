@@ -5,7 +5,6 @@ import com.example.ems.application.dto.request.EventFilterRequest;
 import com.example.ems.application.repository.EventRepository;
 import com.example.ems.application.service.EventService;
 import com.example.ems.domain.model.Event;
-import com.example.ems.infrastructure.mapper.EventMapper;
 import com.example.ems.infrastructure.security.userdetails.CustomUserDetails;
 import com.example.ems.infrastructure.utli.LoggingUtil;
 import lombok.RequiredArgsConstructor;
@@ -13,14 +12,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
-    private final EventMapper eventMapper;
     private final LoggingUtil logger;
+
     @Override
     public Event createEvent(CreateEventRequest createEventRequest, CustomUserDetails currentUser) {
         logger.info("Creating event with request: " + createEventRequest);
@@ -50,5 +50,14 @@ public class EventServiceImpl implements EventService {
         return eventRepository.findUpcomingEvents(pageable);
     }
 
+    @Override
+    public List<Event> getEventsHostedByUser(UUID userId) {
+        return eventRepository.findEventsHostedByUser(userId);
+    }
+
+    @Override
+    public List<Event> getEventsAttendedByUser(UUID userId) {
+        return eventRepository.findEventsAttendedByUser(userId);
+    }
 
 }
