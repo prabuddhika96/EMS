@@ -7,6 +7,7 @@ import com.example.ems.infrastructure.security.userdetails.CustomUserDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface EventRepository {
@@ -19,4 +20,9 @@ public interface EventRepository {
     Page<Event> filterEvents(EventFilterRequest filterRequest, Pageable pageable);
 
     Page<Event> findUpcomingEvents(Pageable pageable);
+
+    List<Event> findEventsHostedByUser(UUID userId);
+
+    List<Event> findEventsAttendedByUser(UUID userId);
+
 }
