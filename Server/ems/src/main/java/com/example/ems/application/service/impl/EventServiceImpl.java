@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -51,13 +50,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getEventsHostedByUser(UUID userId) {
-        return eventRepository.findEventsHostedByUser(userId);
+    public Page<Event> getEventsHostedByUser(UUID userId, Pageable pageable) {
+        return eventRepository.findEventsHostedByUser(userId, pageable);
     }
 
     @Override
-    public List<Event> getEventsAttendedByUser(UUID userId) {
-        return eventRepository.findEventsAttendedByUser(userId);
+    public Page<Event> getEventsAttendedByUser(UUID userId, Pageable pageable) {
+        return eventRepository.findEventsAttendedByUser(userId, pageable);
     }
 
 }

@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -92,23 +91,27 @@ public class EventController {
     }
 
     @GetMapping("/user/{type}")
-    public ResponseEntity<ApiCommonResponse<List<Event>>> getUserEventsByType(
+    public ResponseEntity<ApiCommonResponse<Page<Event>>> getUserEventsByType(
             @PathVariable String type,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
             @AuthenticationPrincipal CustomUserDetails currentUser) {
 
-        List<Event> events;
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Event> events;
 
         switch (type.toLowerCase()) {
-            case "hosting" -> events = eventService.getEventsHostedByUser(currentUser.getUserId());
-            case "attending" -> events = eventService.getEventsAttendedByUser(currentUser.getUserId());
+            case "hosting" -> events = eventService.getEventsHostedByUser(currentUser.getUserId(), pageable);
+            case "attending" -> events = eventService.getEventsAttendedByUser(currentUser.getUserId(), pageable);
             default -> throw new IllegalArgumentException("Invalid type. Use 'hosting' or 'attending'");
         }
 
-        if( events.isEmpty()) {
-            return ApiCommonResponse.create(EventExecutionCode.NO_EVENTS_FOUND, List.of());
+        if (events.isEmpty()) {
+            return ApiCommonResponse.create(EventExecutionCode.NO_EVENTS_FOUND, Page.empty());
         } else {
             return ApiCommonResponse.create(EventExecutionCode.EVENT_LIST_FETCHED_SUCCESS, events);
         }
     }
+
 
 }

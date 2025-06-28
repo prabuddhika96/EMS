@@ -30,10 +30,10 @@ import static com.example.ems.infrastructure.mapper.EventMapper.toDomain;
 
 interface SpringDataEventRepository extends JpaRepository<EventEntity, UUID>, JpaSpecificationExecutor<EventEntity> {
     Page<EventEntity> findByStartTimeAfter(Instant now, Pageable pageable);
-    List<EventEntity> findByUserId(UUID userId);
+    Page<EventEntity> findByUserId(UUID userId, Pageable pageable);
 
     @Query("SELECT e FROM EventEntity e JOIN e.attendances a WHERE a.user.id = :userId")
-    List<EventEntity> findEventsUserIsAttending(UUID userId);
+    Page<EventEntity> findEventsUserIsAttending(UUID userId, Pageable pageable);
 }
 
 
@@ -156,27 +156,27 @@ public class EventRepositoryImpl implements EventRepository {
     }
 
     @Override
-    public List<Event> findEventsHostedByUser(UUID userId) {
+    public Page<Event> findEventsHostedByUser(UUID userId, Pageable pageable) {
         try {
-            List<EventEntity> entities = springDataEventRepository.findByUserId(userId);
-            return entities.stream().map(EventMapper::toDomain).toList();
+            Page<EventEntity> entities = springDataEventRepository.findByUserId(userId, pageable);
+            return entities.map(EventMapper::toDomain);
         } catch (EventException e) {
             throw e;
         } catch (Exception e) {
-            logger.error("Error fetching upcoming events: " + e.getMessage());
+            logger.error("Error fetching events hosted by user: " + e.getMessage());
             throw new EventException(EventExecutionCode.EVENTS_FETCH_FAILED);
         }
     }
 
     @Override
-    public List<Event> findEventsAttendedByUser(UUID userId) {
+    public Page<Event> findEventsAttendedByUser(UUID userId, Pageable pageable) {
         try {
-            List<EventEntity> entities = springDataEventRepository.findEventsUserIsAttending(userId);
-            return entities.stream().map(EventMapper::toDomain).toList();
+            Page<EventEntity> entities = springDataEventRepository.findEventsUserIsAttending(userId, pageable);
+            return entities.map(EventMapper::toDomain);
         } catch (EventException e) {
             throw e;
         } catch (Exception e) {
-            logger.error("Error fetching upcoming events: " + e.getMessage());
+            logger.error("Error fetching events attended by user: " + e.getMessage());
             throw new EventException(EventExecutionCode.EVENTS_FETCH_FAILED);
         }
     }
