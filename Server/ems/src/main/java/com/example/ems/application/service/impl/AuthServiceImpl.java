@@ -81,7 +81,7 @@ public class AuthServiceImpl implements AuthService {
             throw new CommonException(UserExecutionCode.USER_ALREADY_EXISTS);
         }
 
-        UserEntity savedUser = userRepository.save(registrationRequest);
+        User savedUser = userRepository.save(registrationRequest);
 
         if(savedUser == null) {
             logger.error("Failed to register user with email: " + registrationRequest.email());

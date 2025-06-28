@@ -15,11 +15,16 @@ public class AttendanceServiceImpl implements AttendanceService {
     private final AttendanceRepository attendanceRepository;
     private final LoggingUtil logger;
 
-
     @Override
     public AttendenceStatus checkEventStatus(UUID eventId, UUID userId) {
         logger.info("Checking attendance status for eventId: " + eventId + " and userId: " + userId);
 
         return attendanceRepository.checkEventStatus(eventId, userId);
     }
+
+    @Override
+    public void attendEvent(UUID eventId, UUID userId, AttendenceStatus status) {
+        attendanceRepository.attendEvent(eventId, userId, status);
+    }
+
 }

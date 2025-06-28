@@ -3,8 +3,6 @@ package com.example.ems.application.service.impl;
 import com.example.ems.application.repository.UserRepository;
 import com.example.ems.application.service.UserService;
 import com.example.ems.domain.model.User;
-import com.example.ems.infrastructure.constant.executioncode.UserExecutionCode;
-import com.example.ems.infrastructure.exceptions.UserException;
 import com.example.ems.infrastructure.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,9 +17,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(UUID id) {
-        return userRepository.getUserById(id)
-                .map(userMapper::toUser)
-                .orElseThrow(() -> new UserException(UserExecutionCode.USER_NOT_FOUND));
+        return userRepository.getUserById(id);
     }
 
 }

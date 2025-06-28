@@ -2,6 +2,7 @@ package com.example.ems.infrastructure.security.config;
 
 import com.example.ems.adapter.outbound.postgres.entity.UserEntity;
 import com.example.ems.application.repository.UserRepository;
+import com.example.ems.domain.model.User;
 import com.example.ems.infrastructure.security.userdetails.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

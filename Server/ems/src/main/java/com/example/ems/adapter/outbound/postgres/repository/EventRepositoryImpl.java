@@ -133,6 +133,8 @@ public class EventRepositoryImpl implements EventRepository {
             }, pageable);
 
             return entityPage.map(EventMapper::toDomain);
+        } catch (EventException e) {
+            throw e;
         } catch (Exception e) {
             logger.error("Error filtering events: " + e.getMessage());
             throw new EventException(EventExecutionCode.EVENT_FILTER_FAILED);
@@ -145,6 +147,8 @@ public class EventRepositoryImpl implements EventRepository {
             Instant now = Instant.now();
             Page<EventEntity> entityPage = springDataEventRepository.findByStartTimeAfter(now, pageable);
             return entityPage.map(EventMapper::toDomain);
+        } catch (EventException e) {
+            throw e;
         } catch (Exception e) {
             logger.error("Error fetching upcoming events: " + e.getMessage());
             throw new EventException(EventExecutionCode.EVENTS_FETCH_FAILED);
@@ -153,14 +157,28 @@ public class EventRepositoryImpl implements EventRepository {
 
     @Override
     public List<Event> findEventsHostedByUser(UUID userId) {
-        List<EventEntity> entities = springDataEventRepository.findByUserId(userId);
-        return entities.stream().map(EventMapper::toDomain).toList();
+        try {
+            List<EventEntity> entities = springDataEventRepository.findByUserId(userId);
+            return entities.stream().map(EventMapper::toDomain).toList();
+        } catch (EventException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error fetching upcoming events: " + e.getMessage());
+            throw new EventException(EventExecutionCode.EVENTS_FETCH_FAILED);
+        }
     }
 
     @Override
     public List<Event> findEventsAttendedByUser(UUID userId) {
-        List<EventEntity> entities = springDataEventRepository.findEventsUserIsAttending(userId);
-        return entities.stream().map(EventMapper::toDomain).toList();
+        try {
+            List<EventEntity> entities = springDataEventRepository.findEventsUserIsAttending(userId);
+            return entities.stream().map(EventMapper::toDomain).toList();
+        } catch (EventException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error fetching upcoming events: " + e.getMessage());
+            throw new EventException(EventExecutionCode.EVENTS_FETCH_FAILED);
+        }
     }
 
     private EventEntity getEventEntity(UUID eventId, CustomUserDetails currentUser, String action) {

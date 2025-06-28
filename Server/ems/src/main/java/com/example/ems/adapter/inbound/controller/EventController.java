@@ -38,7 +38,6 @@ public class EventController {
     private final LoggingUtil logger;
 
     @PostMapping("/create")
-//    @PreAuthorize("hasAuthority('EVENT_CREATE')")
     public ResponseEntity<ApiCommonResponse<Event>> createEvent(@RequestBody @Valid CreateEventRequest createEventRequest, @AuthenticationPrincipal CustomUserDetails currentUser) {
         logger.info("Creating event with request: " + createEventRequest.toString());
 

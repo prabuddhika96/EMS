@@ -6,4 +6,6 @@ import java.util.UUID;
 
 public interface AttendanceService {
     AttendenceStatus checkEventStatus(UUID eventId, UUID userId);
+
+    void attendEvent(UUID eventId, UUID userId, AttendenceStatus status);
 }
