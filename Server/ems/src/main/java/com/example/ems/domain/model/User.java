@@ -11,14 +11,9 @@ import java.util.UUID;
 @Builder
 public class User {
     private UUID id;
-
     private String name;
-
     private String email;
-
     private UserRole role;
-
     private Instant createdAt;
-
     private Instant updatedAt;
 }

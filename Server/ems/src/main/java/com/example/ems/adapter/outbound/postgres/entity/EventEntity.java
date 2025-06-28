@@ -1,12 +1,15 @@
 package com.example.ems.adapter.outbound.postgres.entity;
 
-import com.example.ems.infrastructure.constant.enums.UserRole;
+import com.example.ems.infrastructure.constant.enums.EventVisibility;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,32 +22,32 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name="users")
+@Table(name="event")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserEntity {
+public class EventEntity {
     @Id
     @GeneratedValue
     private UUID id;
-
-    private String name;
-
-    private String email;
-
-    private String password;
+    private String title;
+    private String description;
+    private Instant startTime;
+    private Instant endTime;
+    private String location;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private EventVisibility visibility;
 
     private Instant createdAt;
-
     private Instant updatedAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.MERGE)
-    private List<EventEntity> events;
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "hostId", referencedColumnName = "id", nullable = false)
+    private UserEntity user;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
     private List<AttendanceEntity> attendances;
 }
