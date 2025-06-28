@@ -1,6 +1,6 @@
 package com.example.ems.adapter.outbound.postgres.entity;
 
-import com.example.ems.infrastructure.constant.UserRole;
+import com.example.ems.infrastructure.constant.enums.UserRole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

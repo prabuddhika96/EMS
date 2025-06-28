@@ -1,6 +1,6 @@
-package com.example.ems.application.dto;
+package com.example.ems.application.dto.request;
 
-import com.example.ems.infrastructure.constant.UserRole;
+import com.example.ems.infrastructure.constant.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

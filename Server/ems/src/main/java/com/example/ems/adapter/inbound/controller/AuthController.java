@@ -1,13 +1,14 @@
 package com.example.ems.adapter.inbound.controller;
 
-import com.example.ems.application.dto.AuthRequest;
-import com.example.ems.infrastructure.security.jwt.JwtTokenProvider;
+import com.example.ems.adapter.inbound.util.ApiCommonResponse;
+import com.example.ems.application.dto.request.AuthRequest;
+import com.example.ems.application.dto.response.AuthResponse;
+import com.example.ems.application.service.AuthService;
+import com.example.ems.infrastructure.constant.executioncode.AuthExecutionCode;
+import com.example.ems.infrastructure.utli.LoggingUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,16 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final LoggingUtil logger;
+    private final AuthService authService;
 
     @PostMapping("/login")
-    public String login(@RequestBody @Valid AuthRequest authRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.email(), authRequest.password())
-        );
+    public ResponseEntity<ApiCommonResponse<AuthResponse>> login(@RequestBody @Valid AuthRequest authRequest) {
+        logger.info("Login request received for username: " + authRequest.email());
 
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return jwtTokenProvider.generateToken(userDetails);
+        return ApiCommonResponse.create(AuthExecutionCode.USER_LOGIN_SUCCESS,
+                authService.authenticateLogin(authRequest));
     }
 }

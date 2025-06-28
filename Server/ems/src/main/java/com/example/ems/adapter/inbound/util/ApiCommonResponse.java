@@ -1,8 +1,8 @@
 package com.example.ems.adapter.inbound.util;
 
+import com.example.ems.infrastructure.constant.executioncode.ExecutionCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -12,12 +12,12 @@ public record ApiCommonResponse<T>(
         String message,
         T data
 ) {
-    public static <T> ResponseEntity<ApiCommonResponse<T>> create(HttpStatus status, int code, String msg, T data) {
+    public static <T> ResponseEntity<ApiCommonResponse<T>> create(ExecutionCode executionCode, T data) {
         return ResponseEntity
-                .status(status)
+                .status(executionCode.getHttpStatus())
                 .body(ApiCommonResponse.<T>builder()
-                        .code(code)
-                        .message(msg)
+                        .code(executionCode.getCode())
+                        .message(executionCode.getMessage())
                         .data(data).build());
     }
 }

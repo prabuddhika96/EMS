@@ -22,14 +22,14 @@ public class UserController {
         return userService.getUserById(UUID.randomUUID());
     }
 
-    @GetMapping("/api/v1/user/profile")
+//    @GetMapping("/api/v1/user/profile")
 //    @PreAuthorize("isAuthenticated()")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String getUserProfile(@AuthenticationPrincipal UserDetails userDetails) {
-        // Access authenticated user's email (username)
-        String email = userDetails.getUsername();
-
-        // Return a simple greeting message
-        return "Hello, authenticated user with email: " + email;
-    }
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public String getUserProfile(@AuthenticationPrincipal UserDetails userDetails) {
+//        // Access authenticated user's email (username)
+//        String email = userDetails.getUsername();
+//
+//        // Return a simple greeting message
+//        return "Hello, authenticated user with email: " + email;
+//    }
 }

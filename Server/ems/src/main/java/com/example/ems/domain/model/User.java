@@ -1,6 +1,6 @@
 package com.example.ems.domain.model;
 
-import com.example.ems.infrastructure.constant.UserRole;
+import com.example.ems.infrastructure.constant.enums.UserRole;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,8 +15,6 @@ public class User {
     private String name;
 
     private String email;
-
-    private String password;
 
     private UserRole role;
 

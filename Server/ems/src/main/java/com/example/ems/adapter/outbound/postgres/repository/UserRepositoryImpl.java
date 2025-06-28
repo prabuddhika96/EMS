@@ -2,7 +2,7 @@ package com.example.ems.adapter.outbound.postgres.repository;
 
 import com.example.ems.adapter.outbound.postgres.entity.UserEntity;
 import com.example.ems.application.repository.UserRepository;
-import com.example.ems.infrastructure.constant.UserRole;
+import com.example.ems.infrastructure.constant.enums.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,6 +28,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<UserEntity> getUserByEmail(String email) {
+
+//        return jpaUserRepository.findByEmail(email);
         if (email.equals("prabuddhika1996@gmail.com")) {
             return Optional.of(UserEntity.builder()
                     .id(UUID.randomUUID())
