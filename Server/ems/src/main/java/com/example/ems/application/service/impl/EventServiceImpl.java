@@ -30,4 +30,11 @@ public class EventServiceImpl implements EventService {
         return eventRepository.updateEvent(eventId, updateRequest, currentUser);
     }
 
+    @Override
+    public void deleteEvent(UUID eventId, CustomUserDetails currentUser) {
+        logger.info("Deleting event with ID: " + eventId);
+        eventRepository.deleteEvent(eventId, currentUser);
+    }
+
+
 }

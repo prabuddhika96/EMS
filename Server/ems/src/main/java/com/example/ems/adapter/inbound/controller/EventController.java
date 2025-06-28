@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -47,5 +48,18 @@ public class EventController {
         return ApiCommonResponse.create(EventExecutionCode.EVENT_UPDATED_SUCCESS,
                 eventService.updateEvent(eventId, updateRequest, currentUser));
     }
+
+    @DeleteMapping("/delete/{eventId}")
+    public ResponseEntity<ApiCommonResponse<Void>> deleteEvent(
+            @PathVariable UUID eventId,
+            @AuthenticationPrincipal CustomUserDetails currentUser
+    ) {
+        logger.info("Delete request for eventId: " + eventId + ", by userId: " + currentUser.getUserId());
+
+        eventService.deleteEvent(eventId, currentUser);
+
+        return ApiCommonResponse.create(EventExecutionCode.EVENT_DELETED_SUCCESS, null);
+    }
+
 
 }

@@ -10,4 +10,7 @@ public interface EventRepository {
     Event createEvent(CreateEventRequest createEventRequest, CustomUserDetails currentUser);
 
     Event updateEvent(UUID eventId, CreateEventRequest updateRequest, CustomUserDetails currentUser);
+
+    void deleteEvent(UUID eventId, CustomUserDetails currentUser);
+
 }

@@ -11,4 +11,7 @@ public interface EventService {
     Event createEvent(CreateEventRequest createEventRequest, CustomUserDetails currentUser);
 
     Event updateEvent(UUID eventId, @Valid CreateEventRequest updateRequest, CustomUserDetails currentUser);
+
+    void deleteEvent(UUID eventId, CustomUserDetails currentUser);
+
 }
