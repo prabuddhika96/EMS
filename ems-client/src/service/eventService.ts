@@ -136,6 +136,22 @@ const filterEvents = async (fillters: EventFilter, page?: number, pageSize?: num
     }
 }
 
+const deleteEvent = async (eventId: string) => {
+    try {
+        let url = servicePath + `/delete/${eventId}`
+        const response = await axiosInstance.delete(url);
+        return {
+            message: "",
+            data: response.data
+        };
+    } catch (err: any) {
+        return {
+            data: null,
+            message: err.response?.data?.message || err.message || "Fetch failed",
+        };
+    }
+}
+
 export const eventService = {
-    getAllUpcomingEvents, getEventById, fetchEventsByType, createEvent, getEventHostList, filterEvents
+    getAllUpcomingEvents, getEventById, fetchEventsByType, createEvent, getEventHostList, filterEvents, deleteEvent
 }
