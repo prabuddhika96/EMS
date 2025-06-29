@@ -271,8 +271,6 @@ function EventDetail() {
                 </div>
               </>
             )}
-
-          {/* attending events */}
         </>
       )}
     </div>
