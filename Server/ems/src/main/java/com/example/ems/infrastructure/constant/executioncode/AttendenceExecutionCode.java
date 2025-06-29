@@ -13,7 +13,9 @@ public enum AttendenceExecutionCode implements ExecutionCode{
     ATTENDENCE_DELETED(4003, "Attendence deleted successfully", HttpStatus.OK),
     ATTENDENCE_FOUND(4004, "Attendence found", HttpStatus.OK),
     USER_ALREADY_ATTENDING_EVENT(4005, "User is already attending this event", HttpStatus.BAD_REQUEST),
-    ATTENDENCE_CREATION_FAILED(4006, "Failed to create attendence", HttpStatus.INTERNAL_SERVER_ERROR),;
+    ATTENDENCE_CREATION_FAILED(4006, "Failed to create attendence", HttpStatus.INTERNAL_SERVER_ERROR),
+    USERS_FETCHED_SUCCESS(4007, "Users fetched successfully", HttpStatus.OK),
+    ATTENDENCE_FETCH_FAILED(4008, "Failed to fetch attendence", HttpStatus.INTERNAL_SERVER_ERROR),;
 
 
     private final int code;

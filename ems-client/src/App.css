@@ -9,3 +9,36 @@
   align-items: center;
   margin: auto 10px;
 }
+
+/* table css */
+.ems-table-wrapper {
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+.ems-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: sans-serif;
+  font-size: 0.95rem;
+}
+
+.ems-table th,
+.ems-table td {
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.ems-table th {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.ems-table tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.ems-table tr:hover {
+  background-color: #eef2f7;
+}

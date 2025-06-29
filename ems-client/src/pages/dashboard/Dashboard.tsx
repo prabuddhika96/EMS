@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Event } from "../../interface/Event";
 import { eventService } from "../../service/eventService";
-import "./styles.css";
-import EventCard from "../../components/EventCard/EventCard";
-import PaginationComponent from "../../components/Pagination/PaginationComponent";
 import { useNavigate } from "react-router-dom";
 import { RouteName } from "../../constants/routeNames";
+import EventCard from "../../components/EventCard/EventCard";
+import GridTemplate from "../../components/Grid/GridTemplate";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -52,28 +51,15 @@ function Dashboard() {
   return (
     <div>
       {eventList && eventList?.length > 0 ? (
-        <div>
-          <div className="grid-container">
-            <div className="dashboard-grid">
-              {eventList.map((event: Event, index: number) => (
-                <EventCard
-                  key={index}
-                  event={event}
-                  onClick={handleEventClick}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="pagination-row">
-            <PaginationComponent
-              totalPages={totalPages}
-              currentPage={page}
-              onPageChnage={handlePageChange}
-            />
-            <p>pagination</p>
-          </div>
-        </div>
+        <GridTemplate
+          totalPages={totalPages}
+          page={page}
+          handlePageChange={handlePageChange}
+        >
+          {eventList.map((event: Event, index: number) => (
+            <EventCard key={index} event={event} onClick={handleEventClick} />
+          ))}
+        </GridTemplate>
       ) : (
         <></>
       )}
