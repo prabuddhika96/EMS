@@ -4,19 +4,22 @@ import React, {
   useState,
   type ReactNode,
 } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import type { RootState } from "../../redux/store";
 import type { User } from "../../interface/User";
 import { RouteName } from "../../constants/routeNames";
 import "./style.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { authService } from "../../service/authService";
+import { logoutUser } from "../../redux/slice/userSlice";
 
 interface Props {
   children: ReactNode;
   title?: string;
 }
 function MainLayout({ children, title }: Props) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const loggedUser: User = useSelector((state: RootState) => state.user);
   const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -35,6 +38,22 @@ function MainLayout({ children, title }: Props) {
       navigate(RouteName.Home);
     }
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      const apiResponse: any = await authService.logout();
+
+      if (apiResponse instanceof Error) {
+        console.error("Failed to retrieve data:", apiResponse.message);
+      } else {
+        console.log(apiResponse?.data);
+        if (apiResponse?.data?.code == 1002) {
+          await dispatch(logoutUser());
+          navigate(RouteName.Home);
+        }
+      }
+    } catch (error) {}
+  };
 
   if (!isMounted) return null;
   return (
@@ -55,7 +74,9 @@ function MainLayout({ children, title }: Props) {
                 <h2 id="siteName">EMS</h2>
                 {title && <h2 id="title">{title}</h2>}
               </div>
-              <h2 className="logout-btn-container">Logout</h2>
+              <button className="logout-btn" onClick={handleLogout}>
+                Logout
+              </button>
             </div>
 
             <div>{children}</div>

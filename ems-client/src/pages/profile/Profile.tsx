@@ -8,6 +8,8 @@ import { eventService } from "../../service/eventService";
 import GridTemplate from "../../components/Grid/GridTemplate";
 import EventCard from "../../components/EventCard/EventCard";
 import type { Event } from "../../interface/Event";
+import { RouteName } from "../../constants/routeNames";
+import { useNavigate } from "react-router-dom";
 
 interface Response {
   eventList: Event[];
@@ -22,6 +24,7 @@ const initialState: Response = {
 };
 
 function Profile() {
+  const navigate = useNavigate();
   const loggedUser: User = useSelector((state: RootState) => state.user);
   const [pageHosting, setPageHosting] = useState<number>(1);
   const [pageSizeHosting, setPageSizeHosting] = useState<number>(10);
@@ -102,6 +105,10 @@ function Profile() {
     fetchEventsByType("attending", 1, Number(value));
   };
 
+  const handleEventClick = (eventId: string) => {
+    navigate(RouteName.EventDetails.replace(":id", eventId));
+  };
+
   return (
     <div className="profile-detail-container">
       <h1 className="profile-title">{loggedUser?.name}</h1>
@@ -131,19 +138,24 @@ function Profile() {
           >
             {responseDataHosting?.eventList.map(
               (event: Event, index: number) => (
-                <EventCard key={index} event={event} />
-              )
-            )}
-
-            {responseDataHosting?.eventList.map(
-              (event: Event, index: number) => (
-                <EventCard key={index} event={event} />
+                <EventCard
+                  key={index}
+                  event={event}
+                  onClick={handleEventClick}
+                />
               )
             )}
           </GridTemplate>
         </div>
       ) : (
-        <h2>No Events Found</h2>
+        <p
+          style={{
+            width: "100%",
+            textAlign: "center",
+          }}
+        >
+          No Events Found.
+        </p>
       )}
 
       {responseDataAttending?.eventList &&
@@ -160,19 +172,24 @@ function Profile() {
           >
             {responseDataAttending?.eventList.map(
               (event: Event, index: number) => (
-                <EventCard key={index} event={event} />
-              )
-            )}
-
-            {responseDataAttending?.eventList.map(
-              (event: Event, index: number) => (
-                <EventCard key={index} event={event} />
+                <EventCard
+                  key={index}
+                  event={event}
+                  onClick={handleEventClick}
+                />
               )
             )}
           </GridTemplate>
         </div>
       ) : (
-        <h2>No Events Found</h2>
+        <p
+          style={{
+            width: "100%",
+            textAlign: "center",
+          }}
+        >
+          No Events Found.
+        </p>
       )}
     </div>
   );

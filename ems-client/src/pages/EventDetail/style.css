@@ -7,9 +7,16 @@
 }
 
 .event-title {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 600;
   margin-bottom: 16px;
+  color: var(--main-color);
+  text-transform: capitalize;
+}
+
+.event-title-span {
+  font-size: 1.5rem;
+  color: var(--main-text-color);
 }
 
 .event-description {
@@ -20,7 +27,7 @@
 
 .event-meta-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 }
 
@@ -28,6 +35,24 @@
   margin: 1rem 0;
   font-size: 1rem;
   color: #374151;
+}
+
+.event-meta select {
+  padding: 5px 12px;
+  border: 1px solid var(--main-text-color, #ccc);
+  border-radius: 4px;
+  font-size: 1rem;
+  color: var(--main-text-color, #333);
+  background-color: #fff;
+  outline: none;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  min-width: 180px;
+  margin-left: 10px;
+}
+
+.event-meta select:focus {
+  border-color: var(--main-color, #2563eb);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
 }
 
 @media (max-width: 768px) {

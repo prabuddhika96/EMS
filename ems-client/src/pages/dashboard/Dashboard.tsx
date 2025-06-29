@@ -159,7 +159,7 @@ function Dashboard() {
             }}
           />
 
-          {hostList && hostList?.length > 0 && (
+          {hostList && hostList.length > 0 && (
             <>
               <label>Host</label>
               <select
@@ -168,11 +168,11 @@ function Dashboard() {
                   handleFilterChnage("hostId", e.target.value);
                 }}
               >
-                <option value="" disabled selected>
+                <option value="" disabled>
                   Select Host
                 </option>
 
-                {hostList?.map((host: User) => (
+                {hostList.map((host: User) => (
                   <option
                     value={host?.id?.toString()}
                     key={host?.id?.toString()}
@@ -207,7 +207,14 @@ function Dashboard() {
           ))}
         </GridTemplate>
       ) : (
-        <></>
+        <p
+          style={{
+            width: "100%",
+            textAlign: "center",
+          }}
+        >
+          No Events Found.
+        </p>
       )}
     </div>
   );

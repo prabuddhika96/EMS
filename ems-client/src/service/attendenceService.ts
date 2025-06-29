@@ -9,7 +9,7 @@ const getAttendingUsersByEventId = async (eventId: string, page?: number, pageSi
         let url = servicePath + `/${eventId}/users`
 
         if (page && pageSize) {
-            url += `?page=${page}size=${pageSize}`
+            url += `?page=${page}&size=${pageSize}`
         }
 
         const response = await axiosInstance.get(url);
@@ -25,6 +25,42 @@ const getAttendingUsersByEventId = async (eventId: string, page?: number, pageSi
     }
 }
 
+const markAttend = async (eventId: string, status: string) => {
+    try {
+        let url = servicePath + `/${eventId}/attend`
+
+        const response = await axiosInstance.post(url, {
+            status: status
+        });
+        return {
+            message: "",
+            data: response.data
+        };
+    } catch (err: any) {
+        return {
+            data: null,
+            message: err.response?.data?.message || err.message || "Fetch failed",
+        };
+    }
+}
+
+const getAttendenceByEventId = async (eventId: string): Promise<ApiResponse> => {
+    try {
+        let url = servicePath + `/${eventId}/status`
+
+        const response = await axiosInstance.get(url);
+        return {
+            message: "",
+            data: response.data
+        };
+    } catch (err: any) {
+        return {
+            data: null,
+            message: err.response?.data?.message || err.message || "Fetch failed",
+        };
+    }
+}
+
 export const attendenceService = {
-    getAttendingUsersByEventId
+    getAttendingUsersByEventId, markAttend, getAttendenceByEventId
 }

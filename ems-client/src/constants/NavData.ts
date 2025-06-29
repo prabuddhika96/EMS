@@ -1,4 +1,4 @@
-import { Calendar, CalendarPlus, LayoutDashboard, User } from "lucide-react";
+import { Calendar, CalendarPlus, LayoutDashboard, Lock, User } from "lucide-react";
 import { RouteName } from "./routeNames";
 
 export const NavData = [
@@ -18,8 +18,8 @@ export const NavData = [
         routeName: RouteName.Profile,
     },
     {
-        name: "All Events",
-        icon: Calendar,
-        routeName: RouteName.Home,
+        name: "Private Events",
+        icon: Lock,
+        routeName: RouteName.PrivateEvent,
     },
 ];

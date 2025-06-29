@@ -13,7 +13,9 @@ export interface Event {
 
 
 export interface EventFilter {
-    startTime: string;
-    endTime: string;
-    hostId: string;
+    startTime?: string;
+    endTime?: string;
+    hostId?: string;
+    location?: string;
+    visibility?: string;
 }

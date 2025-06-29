@@ -37,4 +37,10 @@ public class AuthController {
         return ApiCommonResponse.create(AuthExecutionCode.USER_REGISTRATION_SUCCESS,
                 authService.registerUser(registrationRequest));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiCommonResponse<AuthResponse>> login() {
+        return ApiCommonResponse.create(AuthExecutionCode.USER_LOGOUT_SUCCESS,
+                authService.logout());
+    }
 }

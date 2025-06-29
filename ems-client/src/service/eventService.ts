@@ -10,7 +10,7 @@ const servicePath = '/api/v1/events';
 
 const getAllUpcomingEvents = async (page?: number, pageSize?: number): Promise<ApiResponse> => {
     try {
-        let url = servicePath + '/filter'
+        let url = servicePath + '/upcoming'
 
         if (page && pageSize) {
             url += `?page=${page - 1}&size=${pageSize}`
@@ -115,6 +115,12 @@ const filterEvents = async (fillters: EventFilter, page?: number, pageSize?: num
         }
         if (fillters?.hostId) {
             url += `hostId=${fillters.hostId}&`
+        }
+        if (fillters?.visibility) {
+            url += `visibility=${fillters?.visibility}&`
+        }
+        if (fillters?.location) {
+            url += `location=${fillters?.location}&`
         }
 
         const response = await axiosInstance.get(url);

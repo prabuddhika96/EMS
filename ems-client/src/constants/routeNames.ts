@@ -3,5 +3,6 @@ export const RouteName = {
     Dashboard: '/dashboard',
     Profile: '/profile',
     EventDetails: '/event-details/:id',
-    CreateEvent: '/create-event'
+    CreateEvent: '/create-event',
+    PrivateEvent: '/private-event'
 }

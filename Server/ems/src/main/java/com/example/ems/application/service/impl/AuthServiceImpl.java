@@ -13,6 +13,7 @@ import com.example.ems.infrastructure.exceptions.UserException;
 import com.example.ems.infrastructure.utli.AuthUtil;
 import com.example.ems.infrastructure.utli.LoggingUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,6 +38,9 @@ public class AuthServiceImpl implements AuthService {
 
     private final AuthUtil authUtil;
 
+    @Value("${jwt.expirationMs}")
+    private int jwtExpirationMs;
+
     @Override
     public AuthResponse authenticateLogin(AuthRequest authRequest) {
         logger.info("Authenticating user with email: " + authRequest.email());
@@ -60,7 +64,7 @@ public class AuthServiceImpl implements AuthService {
 
         ResponseCookie jwtCookie = ResponseCookie.from("accessToken", jwt)
                 .httpOnly(true)
-                .maxAge(Duration.ofDays(30))
+                .maxAge(Duration.ofMillis(jwtExpirationMs))
                 .path("/")
                 .secure(true)
                 .sameSite("None")
@@ -106,5 +110,24 @@ public class AuthServiceImpl implements AuthService {
         logger.info("User registered successfully: " + registrationRequest.email());
 
         return login(registrationRequest.email(), registrationRequest.password());
+    }
+
+    @Override
+    public AuthResponse logout() {
+        logger.debug("Logging out user : " + authUtil.getCurrentUsername());
+
+        ResponseCookie jwtCookie = ResponseCookie.from("accessToken", "")
+                .httpOnly(true)
+                .maxAge(Duration.ofSeconds(5))
+                .path("/")
+                .secure(true)
+                .sameSite("None")
+                .build();
+
+        authUtil.getCurrentHttpResponse().addHeader("Set-Cookie",jwtCookie.toString());
+
+        return AuthResponse.builder()
+                .user(null)
+                .build();
     }
 }

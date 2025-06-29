@@ -34,6 +34,7 @@ import static com.example.ems.infrastructure.mapper.EventMapper.toDomain;
 
 interface SpringDataEventRepository extends JpaRepository<EventEntity, UUID>, JpaSpecificationExecutor<EventEntity> {
     Page<EventEntity> findByStartTimeAfter(Instant now, Pageable pageable);
+    Page<EventEntity> findByStartTimeAfterAndVisibility(Instant now, EventVisibility visibility, Pageable pageable);
     Page<EventEntity> findByUserId(UUID userId, Pageable pageable);
 
     @Query("SELECT e FROM EventEntity e JOIN e.attendances a WHERE a.user.id = :userId")
@@ -157,7 +158,7 @@ public class EventRepositoryImpl implements EventRepository {
     public Page<Event> findUpcomingEvents(Pageable pageable) {
         try {
             Instant now = Instant.now();
-            Page<EventEntity> entityPage = springDataEventRepository.findByStartTimeAfter(now, pageable);
+            Page<EventEntity> entityPage = springDataEventRepository.findByStartTimeAfterAndVisibility(now, EventVisibility.PUBLIC ,pageable);
             return entityPage.map(EventMapper::toDomain);
         } catch (EventException e) {
             throw e;

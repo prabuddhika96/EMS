@@ -9,6 +9,8 @@ import type { AttendingUserResponse } from "../../interface/AttendingUserRespons
 import AttendeeTable from "./component/AttendeeTable";
 import PaginationComponent from "../../components/Pagination/PaginationComponent";
 import PageSizeComponent from "../../components/PageSizeSelector/PageSizeComponent";
+import type { IAlert } from "../../interface/Alert";
+import Alert from "../../components/Alert/Alert";
 
 interface Response {
   attendingUserList: AttendingUserResponse[];
@@ -27,6 +29,9 @@ function EventDetail() {
   const [responseData, setResponseData] = useState<Response>(initialState);
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [alert, setAlert] = useState<IAlert | null>(null);
+  const [status, setStatus] = useState<string>("");
 
   const fetchEvent = async (eventId: string) => {
     try {
@@ -69,10 +74,29 @@ function EventDetail() {
     }
   };
 
+  const fetchAttendenceByEventId = async (eventId: string) => {
+    try {
+      const apiResponse: any = await attendenceService.getAttendenceByEventId(
+        eventId
+      );
+
+      if (apiResponse instanceof Error) {
+        console.error("Failed to retrieve data:", apiResponse.message);
+      } else {
+        if (apiResponse?.data?.code === 4004) {
+          setStatus(apiResponse?.data?.data);
+        }
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    }
+  };
+
   useEffect(() => {
     if (id) {
       fetchEvent(id);
       fetchAttendingUserByEventId(id);
+      fetchAttendenceByEventId(id);
     }
   }, [id]);
 
@@ -90,11 +114,50 @@ function EventDetail() {
     fetchAttendingUserByEventId(id);
   };
 
+  const handleStatus = async (value: string) => {
+    try {
+      setStatus(value);
+      const apiResponse: any = await attendenceService.markAttend(id, value);
+
+      if (apiResponse instanceof Error) {
+        setLoading(false);
+        console.error("Failed to retrieve data:", apiResponse.message);
+        setAlert({
+          message:
+            apiResponse?.message?.toString() || "An unknown error occurred.",
+          type: "error",
+        });
+      } else {
+        setLoading(false);
+        if (apiResponse?.data?.code === 4000) {
+          setAlert({
+            message: apiResponse?.data?.message || "Event created successfully",
+            type: "success",
+          });
+        } else {
+          setAlert({
+            message: apiResponse?.data?.message,
+            type: "info",
+          });
+        }
+
+        const timer = setTimeout(() => {
+          setAlert(null);
+        }, 3000);
+        return () => clearTimeout(timer);
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    }
+  };
+
   return (
     <div className="event-detail-container">
       {event && (
         <>
-          <h1 className="event-title">{event.title}</h1>
+          <h1 className="event-title">
+            <span className="event-title-span">Event Name :</span> {event.title}
+          </h1>
           <p className="event-description">{event.description}</p>
 
           <div className="event-meta-grid">
@@ -115,6 +178,29 @@ function EventDetail() {
               <p>
                 <strong>Visibility:</strong> {event.visibility}
               </p>
+            </div>
+
+            <div className="event-meta">
+              <p>
+                <strong>Status:</strong>
+
+                <select
+                  value={status}
+                  onChange={(e) => {
+                    handleStatus(e?.target?.value);
+                  }}
+                  disabled={loading}
+                >
+                  <option value="" disabled>
+                    Select Status
+                  </option>
+                  <option value="GOING">GOING</option>
+                  <option value="MAYBE">MAYBE</option>
+                  <option value="DECLINED">DECLINED</option>
+                </select>
+              </p>
+
+              {alert && <Alert alert={alert} />}
             </div>
           </div>
 

@@ -8,6 +8,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import EventDetail from "../pages/EventDetail/EventDetail";
 import Profile from "../pages/profile/Profile";
 import CreateEvent from "../pages/createEvent/CreateEvent";
+import PrivateEvents from "../pages/privateEvents/PrivateEvents";
 
 function AppRoute() {
   return (
@@ -25,7 +26,9 @@ function AppRoute() {
 
         <Route
           path={RouteName.EventDetails}
-          element={<MainLayout children={<EventDetail />} />}
+          element={
+            <MainLayout children={<EventDetail />} title={"Event Details"} />
+          }
         />
 
         <Route
@@ -37,6 +40,13 @@ function AppRoute() {
           path={RouteName.CreateEvent}
           element={
             <MainLayout children={<CreateEvent />} title={"Create Event"} />
+          }
+        />
+
+        <Route
+          path={RouteName.PrivateEvent}
+          element={
+            <MainLayout children={<PrivateEvents />} title={"Private Events"} />
           }
         />
       </Routes>
