@@ -22,7 +22,8 @@ public enum EventExecutionCode implements ExecutionCode{
     EVENT_FILTER_FAILED(3011, "Event filter failed", HttpStatus.BAD_REQUEST),
     EVENTS_FETCH_FAILED(3012, "Events fetch failed", HttpStatus.BAD_REQUEST),
     EVENT_LIST_EMPTY(3013, "Event list is empty", HttpStatus.NO_CONTENT),
-    NO_EVENTS_FOUND(3014, "No events found", HttpStatus.NOT_FOUND);
+    NO_EVENTS_FOUND(3014, "No events found", HttpStatus.NOT_FOUND),
+    EVENT_ACTION_NOT_ALLOWED(3015, "Event action not allowed", HttpStatus.METHOD_NOT_ALLOWED);
 
     private final int code;
     private final String message;

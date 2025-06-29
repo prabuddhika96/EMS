@@ -76,6 +76,15 @@ public class EventRepositoryImpl implements EventRepository {
         try {
             logger.info("Updating event with ID: " + eventId + " by user: " + currentUser.getUsername());
 
+            EventEntity event = springDataEventRepository.findById(eventId)
+                    .orElseThrow(() -> new EventException(EventExecutionCode.EVENT_NOT_FOUND));
+
+            UUID hostId = event.getId();
+            if (!hostId.equals(currentUser.getUserId()) && !currentUser.isAdmin()) {
+                logger.error("User not authorized to update this event");
+                throw new EventException(EventExecutionCode.EVENT_ACTION_NOT_ALLOWED);
+            }
+
             EventEntity existing = getEventEntity(eventId, currentUser, "update");
 
             existing.setTitle(updateRequest.title());
@@ -103,6 +112,15 @@ public class EventRepositoryImpl implements EventRepository {
     public void deleteEvent(UUID eventId, CustomUserDetails currentUser) {
         try {
             logger.info("Deleting event with ID: " + eventId + " by user: " + currentUser.getUsername());
+
+            EventEntity event = springDataEventRepository.findById(eventId)
+                    .orElseThrow(() -> new EventException(EventExecutionCode.EVENT_NOT_FOUND));
+
+            UUID hostId = event.getId();
+            if (!hostId.equals(currentUser.getUserId()) && !currentUser.isAdmin()) {
+                logger.error("User not authorized to delete this event");
+                throw new EventException(EventExecutionCode.EVENT_ACTION_NOT_ALLOWED);
+            }
 
             EventEntity eventEntity = getEventEntity(eventId, currentUser, "delete");
 

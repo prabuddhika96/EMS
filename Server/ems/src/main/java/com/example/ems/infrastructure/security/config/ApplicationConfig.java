@@ -34,6 +34,7 @@ public class ApplicationConfig {
                     user.getId(),
                     user.getEmail(),
                     user.getPassword(),
+                    user.getRole(),
                     List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
             );
         };
