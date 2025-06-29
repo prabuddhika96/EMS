@@ -100,7 +100,7 @@ const getEventHostList = async (visibility: string = "PUBLIC") => {
     }
 };
 
-const filterEvents = async (page?: number, pageSize?: number, fillters: EventFilter) => {
+const filterEvents = async (fillters: EventFilter, page?: number, pageSize?: number) => {
     try {
         let url = servicePath + `/filter?`
 
