@@ -5,6 +5,8 @@ import com.example.ems.application.dto.request.EventFilterRequest;
 import com.example.ems.application.repository.EventRepository;
 import com.example.ems.application.service.EventService;
 import com.example.ems.domain.model.Event;
+import com.example.ems.domain.model.User;
+import com.example.ems.infrastructure.constant.enums.EventVisibility;
 import com.example.ems.infrastructure.security.userdetails.CustomUserDetails;
 import com.example.ems.infrastructure.utli.LoggingUtil;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -57,6 +60,16 @@ public class EventServiceImpl implements EventService {
     @Override
     public Page<Event> getEventsAttendedByUser(UUID userId, Pageable pageable) {
         return eventRepository.findEventsAttendedByUser(userId, pageable);
+    }
+
+    @Override
+    public Event getEventById(UUID eventId) {
+        return eventRepository.getEventById(eventId);
+    }
+
+    @Override
+    public List<User> getDistinctHosts(EventVisibility visibility) {
+        return eventRepository.getDistinctHosts(visibility);
     }
 
 }

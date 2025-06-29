@@ -41,6 +41,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ApiCommonResponse<Object> handleException(Exception ex) {
+        ex.printStackTrace();
         return ApiCommonResponse.create(
                 CommonExecutionCode.SOMETHING_WENT_WRONG,
                 null

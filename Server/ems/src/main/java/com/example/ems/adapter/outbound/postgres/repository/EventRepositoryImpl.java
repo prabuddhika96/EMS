@@ -6,9 +6,12 @@ import com.example.ems.application.dto.request.CreateEventRequest;
 import com.example.ems.application.dto.request.EventFilterRequest;
 import com.example.ems.application.repository.EventRepository;
 import com.example.ems.domain.model.Event;
+import com.example.ems.domain.model.User;
+import com.example.ems.infrastructure.constant.enums.EventVisibility;
 import com.example.ems.infrastructure.constant.executioncode.EventExecutionCode;
 import com.example.ems.infrastructure.exceptions.EventException;
 import com.example.ems.infrastructure.mapper.EventMapper;
+import com.example.ems.infrastructure.mapper.UserMapper;
 import com.example.ems.infrastructure.security.userdetails.CustomUserDetails;
 import com.example.ems.infrastructure.utli.LoggingUtil;
 import jakarta.persistence.criteria.Predicate;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Repository;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.example.ems.infrastructure.mapper.EventMapper.createEventRequestToEntity;
@@ -30,10 +34,15 @@ import static com.example.ems.infrastructure.mapper.EventMapper.toDomain;
 
 interface SpringDataEventRepository extends JpaRepository<EventEntity, UUID>, JpaSpecificationExecutor<EventEntity> {
     Page<EventEntity> findByStartTimeAfter(Instant now, Pageable pageable);
+    Page<EventEntity> findByStartTimeAfterAndVisibility(Instant now, EventVisibility visibility, Pageable pageable);
     Page<EventEntity> findByUserId(UUID userId, Pageable pageable);
 
     @Query("SELECT e FROM EventEntity e JOIN e.attendances a WHERE a.user.id = :userId")
     Page<EventEntity> findEventsUserIsAttending(UUID userId, Pageable pageable);
+
+    @Query("SELECT DISTINCT e.user FROM EventEntity e WHERE e.visibility = :visibility")
+    Optional<List<UserEntity>> findDistinctHostsByVisibility(EventVisibility visibility);
+
 }
 
 
@@ -129,6 +138,10 @@ public class EventRepositoryImpl implements EventRepository {
                     predicates.add(cb.equal(root.get("visibility"), filterRequest.visibility()));
                 }
 
+                if (filterRequest.hostId() != null) {
+                    predicates.add(cb.equal(root.get("user").get("id"), filterRequest.hostId()));
+                }
+
                 return cb.and(predicates.toArray(new Predicate[0]));
             }, pageable);
 
@@ -145,7 +158,7 @@ public class EventRepositoryImpl implements EventRepository {
     public Page<Event> findUpcomingEvents(Pageable pageable) {
         try {
             Instant now = Instant.now();
-            Page<EventEntity> entityPage = springDataEventRepository.findByStartTimeAfter(now, pageable);
+            Page<EventEntity> entityPage = springDataEventRepository.findByStartTimeAfterAndVisibility(now, EventVisibility.PUBLIC ,pageable);
             return entityPage.map(EventMapper::toDomain);
         } catch (EventException e) {
             throw e;
@@ -177,6 +190,38 @@ public class EventRepositoryImpl implements EventRepository {
             throw e;
         } catch (Exception e) {
             logger.error("Error fetching events attended by user: " + e.getMessage());
+            throw new EventException(EventExecutionCode.EVENTS_FETCH_FAILED);
+        }
+    }
+
+    @Override
+    public Event getEventById(UUID eventId) {
+        try {
+            EventEntity eventEntity = springDataEventRepository.findById(eventId)
+                    .orElseThrow(() -> new EventException(EventExecutionCode.EVENT_NOT_FOUND));
+
+            return toDomain(eventEntity);
+        } catch (EventException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error fetching event : " + e.getMessage());
+            throw new EventException(EventExecutionCode.EVENTS_FETCH_FAILED);
+        }
+    }
+
+    @Override
+    public List<User> getDistinctHosts(EventVisibility visibility) {
+        try {
+            List<UserEntity> users= springDataEventRepository.findDistinctHostsByVisibility(visibility)
+                    .orElseThrow(() -> new EventException(EventExecutionCode.EVENT_NOT_FOUND));
+
+            return users.stream()
+                    .map(UserMapper::toUser)
+                    .toList();
+        } catch (EventException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error fetching event : " + e.getMessage());
             throw new EventException(EventExecutionCode.EVENTS_FETCH_FAILED);
         }
     }

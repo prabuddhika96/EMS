@@ -3,11 +3,14 @@ package com.example.ems.application.service;
 import com.example.ems.application.dto.request.CreateEventRequest;
 import com.example.ems.application.dto.request.EventFilterRequest;
 import com.example.ems.domain.model.Event;
+import com.example.ems.domain.model.User;
+import com.example.ems.infrastructure.constant.enums.EventVisibility;
 import com.example.ems.infrastructure.security.userdetails.CustomUserDetails;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface EventService {
@@ -26,4 +29,7 @@ public interface EventService {
     Page<Event> getEventsAttendedByUser(UUID userId, Pageable pageable);
 
 
+    Event getEventById(UUID eventId);
+
+    List<User> getDistinctHosts(EventVisibility visibility);
 }

@@ -5,6 +5,8 @@ import com.example.ems.application.dto.request.CreateEventRequest;
 import com.example.ems.application.dto.request.EventFilterRequest;
 import com.example.ems.application.service.EventService;
 import com.example.ems.domain.model.Event;
+import com.example.ems.domain.model.User;
+import com.example.ems.infrastructure.constant.enums.EventVisibility;
 import com.example.ems.infrastructure.constant.executioncode.EventExecutionCode;
 import com.example.ems.infrastructure.security.userdetails.CustomUserDetails;
 import com.example.ems.infrastructure.utli.LoggingUtil;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -113,5 +116,22 @@ public class EventController {
         }
     }
 
+    @GetMapping("/{eventId}")
+    public ResponseEntity<ApiCommonResponse<Event>> getEventById( @PathVariable UUID eventId ) {
+
+        return ApiCommonResponse.create(EventExecutionCode.EVENT_FETCHED_SUCCESS, eventService.getEventById(eventId));
+    }
+
+    @GetMapping("/hosts")
+    public ResponseEntity<ApiCommonResponse<List<User>>> getDistinctHosts(@RequestParam(defaultValue = "PUBLIC") EventVisibility visibility) {
+        logger.info("Fetching distinct event hosts");
+        List<User> hosts = eventService.getDistinctHosts(visibility);
+
+        if (hosts.isEmpty()) {
+            return ApiCommonResponse.create(EventExecutionCode.NO_EVENTS_FOUND, hosts);
+        }
+
+        return ApiCommonResponse.create(EventExecutionCode.EVENT_LIST_FETCHED_SUCCESS, hosts);
+    }
 
 }

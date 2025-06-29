@@ -4,6 +4,7 @@ import com.example.ems.infrastructure.constant.enums.EventVisibility;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Instant;
+import java.util.UUID;
 
 public record EventFilterRequest(
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -14,5 +15,7 @@ public record EventFilterRequest(
 
         String location,
 
-        EventVisibility visibility
+        EventVisibility visibility,
+
+        UUID hostId
 ) {}
