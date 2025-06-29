@@ -6,14 +6,25 @@ import { RouteName } from "../../constants/routeNames";
 import EventCard from "../../components/EventCard/EventCard";
 import GridTemplate from "../../components/Grid/GridTemplate";
 
+interface Response {
+  eventList: Event[];
+  totalPages: number;
+  totalRecords: number;
+}
+
+const initialState: Response = {
+  eventList: [],
+  totalPages: 1,
+  totalRecords: 0,
+};
+
 function Dashboard() {
   const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
-  const [eventList, setEventList] = useState<Event[]>([]);
+  const [responseData, setResponseData] = useState<Response>(initialState);
 
-  const fetchEevents = async () => {
+  const fetchEevents = async (page: number, pageSize: number) => {
     try {
       const apiResponse: any = await eventService.getAllUpcomingEvents(
         page - 1,
@@ -25,15 +36,18 @@ function Dashboard() {
       } else {
         if (apiResponse?.data?.code == 3004) {
           // console.log(apiResponse?.data?.data?.content);
-          setEventList(apiResponse?.data?.data?.content);
-          setTotalPages(apiResponse?.data?.data?.totalPages);
+          setResponseData({
+            eventList: apiResponse?.data?.data?.content,
+            totalPages: apiResponse?.data?.data?.totalPages || 1,
+            totalRecords: apiResponse?.data?.data?.totalElements || 0,
+          });
         }
       }
     } catch (error) {}
   };
 
   useEffect(() => {
-    fetchEevents();
+    fetchEevents(page, pageSize);
   }, []);
 
   const handlePageChange = (value: number) => {
@@ -41,7 +55,13 @@ function Dashboard() {
       return;
     }
     setPage(Number(value));
-    fetchEevents();
+    fetchEevents(Number(value), pageSize);
+  };
+
+  const handleChangePageSize = (value: string) => {
+    setPageSize(Number(value));
+    setPage(1);
+    fetchEevents(1, Number(value));
   };
 
   const handleEventClick = (eventId: string) => {
@@ -50,13 +70,15 @@ function Dashboard() {
 
   return (
     <div>
-      {eventList && eventList?.length > 0 ? (
+      {responseData?.eventList && responseData?.eventList?.length > 0 ? (
         <GridTemplate
-          totalPages={totalPages}
+          totalPages={responseData?.totalPages}
           page={page}
           handlePageChange={handlePageChange}
+          totalRecords={responseData?.totalRecords}
+          handleChangePageSize={handleChangePageSize}
         >
-          {eventList.map((event: Event, index: number) => (
+          {responseData?.eventList.map((event: Event, index: number) => (
             <EventCard key={index} event={event} onClick={handleEventClick} />
           ))}
         </GridTemplate>
