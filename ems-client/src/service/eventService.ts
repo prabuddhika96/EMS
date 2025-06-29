@@ -1,4 +1,5 @@
 import axiosInstance from "../interceptor/axios-interceptor";
+import type { CreateEventForm } from "../interface/Form";
 import type { ApiResponse } from "../interface/response";
 
 
@@ -10,7 +11,7 @@ const getAllUpcomingEvents = async (page?: number, pageSize?: number): Promise<A
         let url = servicePath + '/filter'
 
         if (page && pageSize) {
-            url += `?page=${page}size=${pageSize}`
+            url += `?page=${page - 1}&size=${pageSize}`
         }
         const response = await axiosInstance.get(url);
         return {
@@ -61,6 +62,24 @@ const fetchEventsByType = async (type: "hosting" | "attending", page?: number, p
     }
 }
 
+const createEvent = async (formdata: CreateEventForm) => {
+    try {
+        let url = servicePath + `/create`
+
+
+        const response = await axiosInstance.post(url, formdata);
+        return {
+            message: "",
+            data: response.data
+        };
+    } catch (err: any) {
+        return {
+            data: null,
+            message: err.response?.data?.message || err.message || "Fetch failed",
+        };
+    }
+}
+
 export const eventService = {
-    getAllUpcomingEvents, getEventById, fetchEventsByType
+    getAllUpcomingEvents, getEventById, fetchEventsByType, createEvent
 }

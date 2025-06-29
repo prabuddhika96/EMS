@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { RouteName } from "../../constants/routeNames";
 import EventCard from "../../components/EventCard/EventCard";
 import GridTemplate from "../../components/Grid/GridTemplate";
+import HeaderH2 from "../../components/Headers/HeaderH2/HeaderH2";
 
 interface Response {
   eventList: Event[];
@@ -27,7 +28,7 @@ function Dashboard() {
   const fetchEevents = async (page: number, pageSize: number) => {
     try {
       const apiResponse: any = await eventService.getAllUpcomingEvents(
-        page - 1,
+        page,
         pageSize
       );
 
@@ -70,6 +71,13 @@ function Dashboard() {
 
   return (
     <div>
+      <div
+        style={{
+          marginLeft: "10px",
+        }}
+      >
+        <HeaderH2 text="Upcoming Events" />
+      </div>
       {responseData?.eventList && responseData?.eventList?.length > 0 ? (
         <GridTemplate
           totalPages={responseData?.totalPages}

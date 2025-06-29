@@ -1,0 +1,20 @@
+.ems-alert {
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  margin: 1rem 0;
+  text-align: center;
+  color: #fff;
+}
+
+.ems-alert-success {
+  background-color: #22c55e;
+}
+
+.ems-alert-error {
+  background-color: #ef4444;
+}
+
+.ems-alert-info {
+  background-color: #3b82f6;
+}

@@ -8,18 +8,18 @@ export const NavData = [
         routeName: RouteName.Dashboard,
     },
     {
-        name: "All Events",
-        icon: Calendar,
-        routeName: RouteName.Home,
-    },
-    {
         name: "Create Event",
         icon: CalendarPlus,
-        routeName: RouteName.Home,
+        routeName: RouteName.CreateEvent,
     },
     {
         name: "Profile",
         icon: User,
         routeName: RouteName.Profile,
+    },
+    {
+        name: "All Events",
+        icon: Calendar,
+        routeName: RouteName.Home,
     },
 ];

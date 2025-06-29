@@ -1,6 +1,7 @@
 .error-text {
   color: var(--error-text-color);
   font-size: 15px;
+  margin: 0px;
 }
 
 .pagination-row {

@@ -3,15 +3,16 @@
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 16px;
-  max-width: 500px;
+  width: calc(100vw / 6.7);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   margin: 10px auto;
-  transition: box-shadow 0.2s ease;
+  transition: all 100ms ease-in-out;
   cursor: pointer;
 }
 
 .event-card:hover {
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
+  transform: scale(1.01);
 }
 
 .event-header {
@@ -54,4 +55,16 @@
   font-size: 0.875rem;
   color: #374151;
   line-height: 1.5;
+}
+
+@media (max-width: 1000px) {
+  .event-card {
+    width: calc(100vw / 3);
+  }
+}
+
+@media (max-width: 768px) {
+  .event-card {
+    width: calc(100vw / 1.3);
+  }
 }
