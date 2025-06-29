@@ -105,8 +105,10 @@ function Dashboard() {
   };
 
   const handleClickFilter = async () => {
-    console.log(filters);
     try {
+      if (filters == initialFilterState) {
+        alert("Please select at least one filter option before searching.");
+      }
       const apiResponse: any = await eventService.filterEvents(
         page,
         pageSize,
@@ -182,11 +184,7 @@ function Dashboard() {
             </>
           )}
 
-          <button
-            className="dashboard-filter-btn"
-            onClick={handleClickFilter}
-            disabled={filters == initialFilterState}
-          >
+          <button className="dashboard-filter-btn" onClick={handleClickFilter}>
             Filter
           </button>
 
