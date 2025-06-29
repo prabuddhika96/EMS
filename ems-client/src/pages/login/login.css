@@ -1,14 +1,14 @@
 .login-container {
   margin: 2rem auto;
   padding: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--main-text-color);
   border-radius: 8px;
   width: 70%;
 }
 
 .login-container h2 {
   text-align: center;
-  color: #fff;
+  color: var(--main-text-color);
 }
 
 .login-field {
@@ -20,7 +20,7 @@
 }
 
 .login-field label {
-  color: #fff;
+  color: var(--main-text-color);
 }
 
 .login-field input {
@@ -31,7 +31,7 @@
 .login-button {
   width: 100%;
   padding: 0.75rem;
-  background-color: #007bff;
+  background-color: var(--main-color);
   color: #fff;
   border: none;
   border-radius: 4px;

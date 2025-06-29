@@ -1,0 +1,18 @@
+.main-layout-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 97vh;
+  column-gap: 10px;
+}
+
+.main-layout-sidebar {
+  width: 20%;
+  height: 100%;
+}
+
+.main-layout-children {
+  width: 80%;
+  height: 100%;
+  background-color: green;
+}

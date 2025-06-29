@@ -1,6 +1,8 @@
 :root {
-  --bg-color: #0f172b;
+  --bg-color: #ffffff;
   --error-text-color: red;
+  --main-color: #ff9429;
+  --main-text-color: black;
 }
 
 body {

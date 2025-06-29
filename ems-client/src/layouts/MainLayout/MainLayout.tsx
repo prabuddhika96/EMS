@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import type { RootState } from "../../redux/store";
 import type { User } from "../../interface/User";
 import { RouteName } from "../../constants/routeNames";
+import "./style.css";
+import Sidebar from "../../components/Sidebar/Sidebar";
 
 interface Props {
   children: ReactNode;
@@ -32,9 +34,12 @@ function MainLayout({ children }: Props) {
   return (
     <>
       {isMounted && loggedUser?.id != null && (
-        <div>
-          <p>Main Layout</p>
-          {children}
+        <div className="main-layout-container">
+          <div className="main-layout-sidebar">
+            <Sidebar />
+          </div>
+
+          <div className="main-layout-children">{children}</div>
         </div>
       )}
     </>
