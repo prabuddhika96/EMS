@@ -1,6 +1,8 @@
 import axiosInstance from "../interceptor/axios-interceptor";
+import type { EventFilter } from "../interface/Event";
 import type { CreateEventForm } from "../interface/Form";
 import type { ApiResponse } from "../interface/response";
+import { convertToCleanUTCISOString } from "../util/time-utils";
 
 
 const servicePath = '/api/v1/events';
@@ -80,6 +82,54 @@ const createEvent = async (formdata: CreateEventForm) => {
     }
 }
 
+const getEventHostList = async (visibility: string = "PUBLIC") => {
+    try {
+        let url = servicePath + `/hosts?visibility=${visibility}`
+
+
+        const response = await axiosInstance.get(url);
+        return {
+            message: "",
+            data: response.data
+        };
+    } catch (err: any) {
+        return {
+            data: null,
+            message: err.response?.data?.message || err.message || "Fetch failed",
+        };
+    }
+};
+
+const filterEvents = async (page?: number, pageSize?: number, fillters: EventFilter) => {
+    try {
+        let url = servicePath + `/filter?`
+
+        if (page && pageSize) {
+            url += `page=${page - 1}&size=${pageSize}&`
+        }
+        if (fillters?.startTime) {
+            url += `startDate=${convertToCleanUTCISOString(fillters.startTime)}&`
+        }
+        if (fillters?.endTime) {
+            url += `startDate=${convertToCleanUTCISOString(fillters.endTime)}&`
+        }
+        if (fillters?.hostId) {
+            url += `hostId=${fillters.hostId}&`
+        }
+
+        const response = await axiosInstance.get(url);
+        return {
+            message: "",
+            data: response.data
+        };
+    } catch (err: any) {
+        return {
+            data: null,
+            message: err.response?.data?.message || err.message || "Fetch failed",
+        };
+    }
+}
+
 export const eventService = {
-    getAllUpcomingEvents, getEventById, fetchEventsByType, createEvent
+    getAllUpcomingEvents, getEventById, fetchEventsByType, createEvent, getEventHostList, filterEvents
 }

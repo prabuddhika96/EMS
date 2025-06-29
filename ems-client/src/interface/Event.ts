@@ -10,3 +10,10 @@ export interface Event {
     createdAt?: string;
     updatedAt?: string;
 }
+
+
+export interface EventFilter {
+    startTime: string;
+    endTime: string;
+    hostId: string;
+}
