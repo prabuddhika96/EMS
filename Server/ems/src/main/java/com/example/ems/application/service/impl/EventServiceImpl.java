@@ -59,4 +59,9 @@ public class EventServiceImpl implements EventService {
         return eventRepository.findEventsAttendedByUser(userId, pageable);
     }
 
+    @Override
+    public Event getEventById(UUID eventId) {
+        return eventRepository.getEventById(eventId);
+    }
+
 }

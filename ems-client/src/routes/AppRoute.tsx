@@ -23,9 +23,7 @@ function AppRoute() {
 
         <Route
           path={RouteName.EventDetails}
-          element={
-            <MainLayout children={<EventDetail />} title={"Event Details"} />
-          }
+          element={<MainLayout children={<EventDetail />} />}
         />
       </Routes>
     </BrowserRouter>

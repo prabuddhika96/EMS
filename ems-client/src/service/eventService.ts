@@ -25,6 +25,22 @@ const getAllUpcomingEvents = async (page: number, pageSize: number): Promise<Api
     }
 }
 
+const getEventById = async (eventId: string): Promise<ApiResponse> => {
+    try {
+        let url = servicePath + `/${eventId}`
+        const response = await axiosInstance.get(url);
+        return {
+            message: "",
+            data: response.data
+        };
+    } catch (err: any) {
+        return {
+            data: null,
+            message: err.response?.data?.message || err.message || "Fetch failed",
+        };
+    }
+}
+
 export const eventService = {
-    getAllUpcomingEvents
+    getAllUpcomingEvents, getEventById
 }

@@ -113,5 +113,11 @@ public class EventController {
         }
     }
 
+    @GetMapping("/{eventId}")
+    public ResponseEntity<ApiCommonResponse<Event>> getEventById( @PathVariable UUID eventId ) {
+
+        return ApiCommonResponse.create(EventExecutionCode.EVENT_FETCHED_SUCCESS, eventService.getEventById(eventId));
+    }
+
 
 }

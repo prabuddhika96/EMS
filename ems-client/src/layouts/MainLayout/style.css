@@ -24,6 +24,24 @@
   margin-left: 80px;
 }
 
+.main-layout-children-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px 0 10px;
+}
+
 .main-layout-children h2 {
+  margin: 0px;
+}
+
+.logout-btn-container {
+}
+
+#siteName {
+  font-size: 50px;
+}
+
+#title {
   margin-left: 10px;
 }

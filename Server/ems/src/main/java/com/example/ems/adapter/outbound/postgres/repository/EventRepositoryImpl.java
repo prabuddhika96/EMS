@@ -181,6 +181,21 @@ public class EventRepositoryImpl implements EventRepository {
         }
     }
 
+    @Override
+    public Event getEventById(UUID eventId) {
+        try {
+            EventEntity eventEntity = springDataEventRepository.findById(eventId)
+                    .orElseThrow(() -> new EventException(EventExecutionCode.EVENT_NOT_FOUND));
+
+            return toDomain(eventEntity);
+        } catch (EventException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error fetching event : " + e.getMessage());
+            throw new EventException(EventExecutionCode.EVENTS_FETCH_FAILED);
+        }
+    }
+
     private EventEntity getEventEntity(UUID eventId, CustomUserDetails currentUser, String action) {
         EventEntity existing = springDataEventRepository.findById(eventId)
                 .orElseThrow(() -> new EventException(EventExecutionCode.EVENT_NOT_FOUND));

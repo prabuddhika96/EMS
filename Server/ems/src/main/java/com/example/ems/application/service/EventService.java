@@ -26,4 +26,5 @@ public interface EventService {
     Page<Event> getEventsAttendedByUser(UUID userId, Pageable pageable);
 
 
+    Event getEventById(UUID eventId);
 }

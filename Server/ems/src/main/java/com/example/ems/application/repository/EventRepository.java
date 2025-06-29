@@ -24,4 +24,5 @@ public interface EventRepository {
 
     Page<Event> findEventsAttendedByUser(UUID userId, Pageable pageable);
 
+    Event getEventById(UUID eventId);
 }

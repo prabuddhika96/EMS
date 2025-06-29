@@ -1,0 +1,25 @@
+.event-detail-container {
+  padding: 10px;
+  font-family: sans-serif;
+  color: #1f2937;
+  height: calc(100vh - 90px);
+  overflow-y: scroll;
+}
+
+.event-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.event-description {
+  color: #4b5563;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.event-meta p {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #374151;
+}

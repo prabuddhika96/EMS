@@ -14,7 +14,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 
 interface Props {
   children: ReactNode;
-  title: string;
+  title?: string;
 }
 function MainLayout({ children, title }: Props) {
   const navigate = useNavigate();
@@ -50,7 +50,11 @@ function MainLayout({ children, title }: Props) {
           </div>
 
           <div className="main-layout-children">
-            <h2>{title}</h2>
+            <div className="main-layout-children-header">
+              <h2 id="siteName">EMS</h2>
+              <h2 className="logout-btn-container">Logout</h2>
+            </div>
+            {title && <h2 id="title">{title}</h2>}
             <div>{children}</div>
           </div>
         </div>
