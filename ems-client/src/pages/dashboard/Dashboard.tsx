@@ -110,9 +110,9 @@ function Dashboard() {
         alert("Please select at least one filter option before searching.");
       }
       const apiResponse: any = await eventService.filterEvents(
+        filters,
         page,
-        pageSize,
-        filters
+        pageSize
       );
 
       if (apiResponse instanceof Error) {
