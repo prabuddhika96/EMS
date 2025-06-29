@@ -17,7 +17,7 @@ function AppRoute() {
 
         <Route
           path={RouteName.Dashboard}
-          element={<MainLayout children={<Dashboard />} />}
+          element={<MainLayout children={<Dashboard />} title={"Dashboard"} />}
         />
       </Routes>
     </BrowserRouter>

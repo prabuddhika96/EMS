@@ -14,8 +14,9 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 
 interface Props {
   children: ReactNode;
+  title: string;
 }
-function MainLayout({ children }: Props) {
+function MainLayout({ children, title }: Props) {
   const navigate = useNavigate();
   const loggedUser: User = useSelector((state: RootState) => state.user);
   const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -48,7 +49,10 @@ function MainLayout({ children }: Props) {
             <Sidebar isOpen={open} toggleDrawer={toggleDrawer} />
           </div>
 
-          <div className="main-layout-children">{children}</div>
+          <div className="main-layout-children">
+            <h2>{title}</h2>
+            <div>{children}</div>
+          </div>
         </div>
       )}
     </>
