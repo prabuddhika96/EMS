@@ -21,5 +21,9 @@
 .main-layout-children {
   width: 100%;
   height: 100%;
-  margin-left: 90px;
+  margin-left: 80px;
+}
+
+.main-layout-children h2 {
+  margin-left: 10px;
 }

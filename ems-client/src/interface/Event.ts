@@ -7,6 +7,6 @@ export interface Event {
     endTime: string;
     location: string;
     visibility: "PUBLIC" | "PRIVATE";
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: string;
+    updatedAt?: string;
 }

@@ -2,3 +2,10 @@
   color: var(--error-text-color);
   font-size: 15px;
 }
+
+.pagination-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto 10px;
+}
