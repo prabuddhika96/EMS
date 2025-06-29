@@ -10,8 +10,10 @@ import com.example.ems.domain.model.User;
 import com.example.ems.infrastructure.constant.executioncode.UserExecutionCode;
 import com.example.ems.infrastructure.exceptions.CommonException;
 import com.example.ems.infrastructure.exceptions.UserException;
+import com.example.ems.infrastructure.utli.AuthUtil;
 import com.example.ems.infrastructure.utli.LoggingUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.example.ems.infrastructure.security.jwt.JwtTokenProvider;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.util.Optional;
 
 @Service
@@ -31,6 +34,8 @@ public class AuthServiceImpl implements AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+
+    private final AuthUtil authUtil;
 
     @Override
     public AuthResponse authenticateLogin(AuthRequest authRequest) {
@@ -53,6 +58,16 @@ public class AuthServiceImpl implements AuthService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String jwt = jwtTokenProvider.generateToken(userDetails);
 
+        ResponseCookie jwtCookie = ResponseCookie.from("accessToken", jwt)
+                .httpOnly(true)
+                .maxAge(Duration.ofDays(30))
+                .path("/")
+                .secure(true)
+                .sameSite("None")
+                .build();
+
+        authUtil.getCurrentHttpResponse().addHeader("Set-Cookie", jwtCookie.toString());
+
         UserEntity userEntity = userRepository.getUserByEmail(userDetails.getUsername()).orElseThrow(
                 () -> new UserException(UserExecutionCode.USER_NOT_FOUND)
         );
@@ -65,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         return AuthResponse.builder()
-                .token(jwt)
+//                .token(jwt)
                 .user(user)
                 .build();
     }

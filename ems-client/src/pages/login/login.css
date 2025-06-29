@@ -1,0 +1,46 @@
+.login-container {
+  margin: 2rem auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 70%;
+}
+
+.login-container h2 {
+  text-align: center;
+  color: #fff;
+}
+
+.login-field {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: start;
+}
+
+.login-field label {
+  color: #fff;
+}
+
+.login-field input {
+  width: calc(100% - 1.7rem);
+  padding: 0.75rem;
+}
+
+.login-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    width: 60%;
+  }
+}
