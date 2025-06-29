@@ -6,5 +6,6 @@
 }
 
 body {
+  margin: 0px !important;
   background-color: var(--bg-color);
 }

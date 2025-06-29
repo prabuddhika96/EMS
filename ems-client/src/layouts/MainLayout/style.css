@@ -1,18 +1,25 @@
 .main-layout-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
-  height: 97vh;
-  column-gap: 10px;
+  height: 100vh;
 }
 
 .main-layout-sidebar {
-  width: 20%;
+  position: absolute;
+  z-index: 20;
   height: 100%;
 }
 
+.main-layout-sidebar-open {
+  width: 150px;
+}
+.main-layout-sidebar-close {
+  width: 80px;
+}
+
 .main-layout-children {
-  width: 80%;
+  width: 100%;
   height: 100%;
-  background-color: green;
+  margin-left: 90px;
 }

@@ -18,7 +18,12 @@ interface Props {
 function MainLayout({ children }: Props) {
   const navigate = useNavigate();
   const loggedUser: User = useSelector((state: RootState) => state.user);
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const toggleDrawer = (val: boolean) => {
+    setOpen(val);
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -35,8 +40,12 @@ function MainLayout({ children }: Props) {
     <>
       {isMounted && loggedUser?.id != null && (
         <div className="main-layout-container">
-          <div className="main-layout-sidebar">
-            <Sidebar />
+          <div
+            className={`${
+              open ? `main-layout-sidebar-open` : `main-layout-sidebar-close`
+            } main-layout-sidebar`}
+          >
+            <Sidebar isOpen={open} toggleDrawer={toggleDrawer} />
           </div>
 
           <div className="main-layout-children">{children}</div>
