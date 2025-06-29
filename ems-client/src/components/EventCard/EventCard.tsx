@@ -4,10 +4,16 @@ import "./style.css";
 
 interface Props {
   event: Event;
+  onClick: (eventId: string) => void;
 }
-function EventCard({ event }: Props) {
+function EventCard({ event, onClick }: Props) {
   return (
-    <div className="event-card">
+    <div
+      className="event-card"
+      onClick={() => {
+        onClick(event?.id);
+      }}
+    >
       <div className="event-header">
         <h2 className="event-title">{event.title}</h2>
         <span className={`event-badge ${event.visibility.toLowerCase()}`}>

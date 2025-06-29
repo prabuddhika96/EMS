@@ -1,4 +1,5 @@
 export const RouteName = {
     Home: "/",
-    Dashboard: '/dashboard'
+    Dashboard: '/dashboard',
+    EventDetails: '/event-details/:id'
 }

@@ -5,6 +5,7 @@ import { RouteName } from "../constants/routeNames";
 import AuthLayout from "../layouts/AuthLayout/AuthLayout";
 import Login from "../pages/login/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
+import EventDetail from "../pages/EventDetail/EventDetail";
 
 function AppRoute() {
   return (
@@ -18,6 +19,13 @@ function AppRoute() {
         <Route
           path={RouteName.Dashboard}
           element={<MainLayout children={<Dashboard />} title={"Dashboard"} />}
+        />
+
+        <Route
+          path={RouteName.EventDetails}
+          element={
+            <MainLayout children={<EventDetail />} title={"Event Details"} />
+          }
         />
       </Routes>
     </BrowserRouter>

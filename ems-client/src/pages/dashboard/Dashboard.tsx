@@ -4,8 +4,11 @@ import { eventService } from "../../service/eventService";
 import "./styles.css";
 import EventCard from "../../components/EventCard/EventCard";
 import PaginationComponent from "../../components/Pagination/PaginationComponent";
+import { useNavigate } from "react-router-dom";
+import { RouteName } from "../../constants/routeNames";
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
@@ -42,6 +45,10 @@ function Dashboard() {
     fetchEevents();
   };
 
+  const handleEventClick = (eventId: string) => {
+    navigate(RouteName.EventDetails.replace(":id", eventId));
+  };
+
   return (
     <div>
       {eventList && eventList?.length > 0 ? (
@@ -49,11 +56,11 @@ function Dashboard() {
           <div className="grid-container">
             <div className="dashboard-grid">
               {eventList.map((event: Event, index: number) => (
-                <EventCard key={index} event={event} />
-              ))}
-
-              {eventList.map((event: Event, index: number) => (
-                <EventCard key={index + eventList?.length} event={event} />
+                <EventCard
+                  key={index}
+                  event={event}
+                  onClick={handleEventClick}
+                />
               ))}
             </div>
           </div>
