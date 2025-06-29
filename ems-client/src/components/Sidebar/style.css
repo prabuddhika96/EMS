@@ -3,7 +3,7 @@
   transition: all 300ms ease-in-out;
   display: flex;
   flex-direction: column;
-  background-image: linear-gradient(to top, #1e3a8a, #3b82f6, #93c5fd);
+  background-image: linear-gradient(to top, #576fb1, #7198d7, #93c5fd);
   /* background-image: linear-gradient(to top, #a03f03, #d15101, #ff6200); */
   color: white;
   padding-top: 1.25rem;

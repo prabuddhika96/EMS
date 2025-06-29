@@ -117,52 +117,60 @@ function Profile() {
         </div>
       </div>
 
-      <HeaderH2 text={"Hosting Events"} />
       {responseDataHosting?.eventList &&
       responseDataHosting?.eventList?.length > 0 ? (
-        <GridTemplate
-          totalPages={responseDataHosting?.totalPages}
-          page={pageHosting}
-          handlePageChange={handlePageChangeHosting}
-          totalRecords={responseDataHosting?.totalRecords}
-          handleChangePageSize={handleChangePageSizeHosting}
-          ignoreHeight={true}
-        >
-          {responseDataHosting?.eventList.map((event: Event, index: number) => (
-            <EventCard key={index} event={event} />
-          ))}
+        <div className="event-container-box">
+          <HeaderH2 text={"Hosting Events"} />
+          <GridTemplate
+            totalPages={responseDataHosting?.totalPages}
+            page={pageHosting}
+            handlePageChange={handlePageChangeHosting}
+            totalRecords={responseDataHosting?.totalRecords}
+            handleChangePageSize={handleChangePageSizeHosting}
+            ignoreHeight={true}
+          >
+            {responseDataHosting?.eventList.map(
+              (event: Event, index: number) => (
+                <EventCard key={index} event={event} />
+              )
+            )}
 
-          {responseDataHosting?.eventList.map((event: Event, index: number) => (
-            <EventCard key={index} event={event} />
-          ))}
-        </GridTemplate>
+            {responseDataHosting?.eventList.map(
+              (event: Event, index: number) => (
+                <EventCard key={index} event={event} />
+              )
+            )}
+          </GridTemplate>
+        </div>
       ) : (
         <h2>No Events Found</h2>
       )}
 
-      <HeaderH2 text={"Attending Events"} />
       {responseDataAttending?.eventList &&
       responseDataAttending?.eventList?.length > 0 ? (
-        <GridTemplate
-          totalPages={responseDataAttending?.totalPages}
-          page={pageAttending}
-          handlePageChange={handlePageChangeAttending}
-          totalRecords={responseDataAttending?.totalRecords}
-          handleChangePageSize={handleChangePageSizeAttending}
-          ignoreHeight={true}
-        >
-          {responseDataAttending?.eventList.map(
-            (event: Event, index: number) => (
-              <EventCard key={index} event={event} />
-            )
-          )}
+        <div className="event-container-box">
+          <HeaderH2 text={"Hosting Events"} />
+          <GridTemplate
+            totalPages={responseDataAttending?.totalPages}
+            page={pageAttending}
+            handlePageChange={handlePageChangeAttending}
+            totalRecords={responseDataAttending?.totalRecords}
+            handleChangePageSize={handleChangePageSizeAttending}
+            ignoreHeight={true}
+          >
+            {responseDataAttending?.eventList.map(
+              (event: Event, index: number) => (
+                <EventCard key={index} event={event} />
+              )
+            )}
 
-          {responseDataAttending?.eventList.map(
-            (event: Event, index: number) => (
-              <EventCard key={index} event={event} />
-            )
-          )}
-        </GridTemplate>
+            {responseDataAttending?.eventList.map(
+              (event: Event, index: number) => (
+                <EventCard key={index} event={event} />
+              )
+            )}
+          </GridTemplate>
+        </div>
       ) : (
         <h2>No Events Found</h2>
       )}

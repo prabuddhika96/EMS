@@ -3,6 +3,8 @@
   --error-text-color: red;
   --main-color: #3574e2;
   --main-text-color: black;
+  --light-gray: #f7f7f7;
+  --header-color: #93c5fd;
 }
 
 body {

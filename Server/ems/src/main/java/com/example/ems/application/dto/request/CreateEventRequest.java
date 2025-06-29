@@ -1,7 +1,6 @@
 package com.example.ems.application.dto.request;
 
 import com.example.ems.infrastructure.constant.enums.EventVisibility;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
