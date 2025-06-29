@@ -4,14 +4,16 @@ import "./style.css";
 
 interface Props {
   event: Event;
-  onClick: (eventId: string) => void;
+  onClick?: (eventId: string) => void;
 }
 function EventCard({ event, onClick }: Props) {
   return (
     <div
       className="event-card"
       onClick={() => {
-        onClick(event?.id);
+        if (onClick) {
+          onClick(event?.id);
+        }
       }}
     >
       <div className="event-header">

@@ -31,6 +31,12 @@
   padding: 0 20px 0 10px;
 }
 
+.main-layout-children-header-left {
+  display: flex;
+  justify-content: start;
+  align-items: end;
+}
+
 .main-layout-children h2 {
   margin: 0px;
 }
@@ -43,5 +49,14 @@
 }
 
 #title {
-  margin-left: 10px;
+  margin-left: 20px;
+  font-size: 30px;
+  margin-bottom: 6px;
+  font-weight: 200;
+}
+
+@media (max-width: 768px) {
+  #title {
+    display: none;
+  }
 }

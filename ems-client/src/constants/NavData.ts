@@ -20,6 +20,6 @@ export const NavData = [
     {
         name: "Profile",
         icon: User,
-        routeName: RouteName.Home,
+        routeName: RouteName.Profile,
     },
 ];

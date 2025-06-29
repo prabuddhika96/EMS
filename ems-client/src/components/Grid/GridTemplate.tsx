@@ -10,6 +10,7 @@ interface Props {
   page?: number;
   handlePageChange?: any;
   handleChangePageSize?: any;
+  ignoreHeight?: boolean;
 }
 function GridTemplate({
   children,
@@ -18,11 +19,18 @@ function GridTemplate({
   handlePageChange,
   totalRecords,
   handleChangePageSize,
+  ignoreHeight = false,
 }: Props) {
   return (
     <div>
-      <div className="grid-container">
-        <div className="dashboard-grid">{children}</div>
+      <div className={`${!ignoreHeight && `grid-container`}`}>
+        <div
+          className={`dashboard-grid ${
+            !ignoreHeight && `dashboard-grid-max-height`
+          }`}
+        >
+          {children}
+        </div>
       </div>
 
       <div className="pagination-row">

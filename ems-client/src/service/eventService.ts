@@ -46,7 +46,7 @@ const fetchEventsByType = async (type: "hosting" | "attending", page?: number, p
         let url = servicePath + `/user/${type}`
 
         if (page && pageSize) {
-            url += `?page=${page}size=${pageSize}`
+            url += `?page=${page - 1}&size=${pageSize}`
         }
         const response = await axiosInstance.get(url);
         return {

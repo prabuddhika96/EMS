@@ -51,10 +51,13 @@ function MainLayout({ children, title }: Props) {
 
           <div className="main-layout-children">
             <div className="main-layout-children-header">
-              <h2 id="siteName">EMS</h2>
+              <div className="main-layout-children-header-left">
+                <h2 id="siteName">EMS</h2>
+                {title && <h2 id="title">{title}</h2>}
+              </div>
               <h2 className="logout-btn-container">Logout</h2>
             </div>
-            {title && <h2 id="title">{title}</h2>}
+
             <div>{children}</div>
           </div>
         </div>

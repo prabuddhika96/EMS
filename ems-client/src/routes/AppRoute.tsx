@@ -6,6 +6,7 @@ import AuthLayout from "../layouts/AuthLayout/AuthLayout";
 import Login from "../pages/login/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
 import EventDetail from "../pages/EventDetail/EventDetail";
+import Profile from "../pages/profile/Profile";
 
 function AppRoute() {
   return (
@@ -24,6 +25,11 @@ function AppRoute() {
         <Route
           path={RouteName.EventDetails}
           element={<MainLayout children={<EventDetail />} />}
+        />
+
+        <Route
+          path={RouteName.Profile}
+          element={<MainLayout children={<Profile />} title={"User Profile"} />}
         />
       </Routes>
     </BrowserRouter>
