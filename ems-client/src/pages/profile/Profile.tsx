@@ -110,87 +110,95 @@ function Profile() {
   };
 
   return (
-    <div className="profile-detail-container">
-      <h1 className="profile-title">{loggedUser?.name}</h1>
-
-      <div className="profile-meta-grid">
-        <div className="profile-meta">
-          <p>
-            <strong>User ID :</strong> {loggedUser?.id}
-          </p>
-          <p>
-            <strong>Email :</strong> {loggedUser?.email}
-          </p>
+    <div className="profile-root">
+      <div className="profile-card">
+        <div className="profile-header-row-mui">
+          <div className="profile-avatar-mui">
+            {loggedUser?.name
+              ? loggedUser.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .toUpperCase()
+              : ""}
+          </div>
+          <div className="profile-header-info-mui">
+            <h1 className="profile-title-mui">{loggedUser?.name}</h1>
+            <div className="profile-meta-grid-mui">
+              <div className="profile-meta-mui">
+                <p>
+                  <strong>User ID :</strong> {loggedUser?.id}
+                </p>
+                <p>
+                  <strong>Email :</strong> {loggedUser?.email}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <HeaderH2 text={"Hosting Events"} />
-      {responseDataHosting?.eventList &&
-      responseDataHosting?.eventList?.length > 0 ? (
-        <div className="event-container-box">
-          <GridTemplate
-            totalPages={responseDataHosting?.totalPages}
-            page={pageHosting}
-            handlePageChange={handlePageChangeHosting}
-            totalRecords={responseDataHosting?.totalRecords}
-            handleChangePageSize={handleChangePageSizeHosting}
-            ignoreHeight={true}
-          >
-            {responseDataHosting?.eventList.map(
-              (event: Event, index: number) => (
-                <EventCard
-                  key={index}
-                  event={event}
-                  onClick={handleEventClick}
-                />
-              )
-            )}
-          </GridTemplate>
+      <section className="profile-section-mui">
+        <HeaderH2 text={"Hosting Events"} />
+        <div className="profile-events-paper">
+          {responseDataHosting?.eventList &&
+          responseDataHosting?.eventList?.length > 0 ? (
+            <div className="">
+              <GridTemplate
+                totalPages={responseDataHosting?.totalPages}
+                page={pageHosting}
+                handlePageChange={handlePageChangeHosting}
+                totalRecords={responseDataHosting?.totalRecords}
+                handleChangePageSize={handleChangePageSizeHosting}
+                ignoreHeight={true}
+              >
+                {responseDataHosting?.eventList.map(
+                  (event: Event, index: number) => (
+                    <EventCard
+                      key={index}
+                      event={event}
+                      onClick={handleEventClick}
+                    />
+                  )
+                )}
+              </GridTemplate>
+            </div>
+          ) : (
+            <p className="profile-no-events">No Events Found.</p>
+          )}
         </div>
-      ) : (
-        <p
-          style={{
-            width: "100%",
-            textAlign: "center",
-          }}
-        >
-          No Events Found.
-        </p>
-      )}
+      </section>
 
-      <HeaderH2 text={"Hosting Events"} />
-      {responseDataAttending?.eventList &&
-      responseDataAttending?.eventList?.length > 0 ? (
-        <div className="event-container-box">
-          <GridTemplate
-            totalPages={responseDataAttending?.totalPages}
-            page={pageAttending}
-            handlePageChange={handlePageChangeAttending}
-            totalRecords={responseDataAttending?.totalRecords}
-            handleChangePageSize={handleChangePageSizeAttending}
-            ignoreHeight={true}
-          >
-            {responseDataAttending?.eventList.map(
-              (event: Event, index: number) => (
-                <EventCard
-                  key={index}
-                  event={event}
-                  onClick={handleEventClick}
-                />
-              )
-            )}
-          </GridTemplate>
+      <section className="profile-section-mui">
+        <HeaderH2 text={"Attending Events"} />
+        <div className="profile-events-paper">
+          {responseDataAttending?.eventList &&
+          responseDataAttending?.eventList?.length > 0 ? (
+            <div className="">
+              <GridTemplate
+                totalPages={responseDataAttending?.totalPages}
+                page={pageAttending}
+                handlePageChange={handlePageChangeAttending}
+                totalRecords={responseDataAttending?.totalRecords}
+                handleChangePageSize={handleChangePageSizeAttending}
+                ignoreHeight={true}
+              >
+                {responseDataAttending?.eventList.map(
+                  (event: Event, index: number) => (
+                    <EventCard
+                      key={index}
+                      event={event}
+                      onClick={handleEventClick}
+                    />
+                  )
+                )}
+              </GridTemplate>
+            </div>
+          ) : (
+            <p className="profile-no-events">No Events Found.</p>
+          )}
         </div>
-      ) : (
-        <p
-          style={{
-            width: "100%",
-            textAlign: "center",
-          }}
-        >
-          No Events Found.
-        </p>
-      )}
+      </section>
     </div>
   );
 }

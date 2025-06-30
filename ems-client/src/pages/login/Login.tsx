@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import "./Login.css";
 import type { LoginForm } from "../../interface/Form";
 import { validateLoginForm } from "../../util/validation";
 import { authService } from "../../service/authService";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../redux/slice/userSlice";
-import { useNavigate } from "react-router-dom";
+import { logoutUser, setUser } from "../../redux/slice/userSlice";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { RouteName } from "../../constants/routeNames";
 
 const initialState: LoginForm = {

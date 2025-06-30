@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "main-font";
+  src: url("./assets/fonts/YourFontFile.woff2") format("woff2"),
+    url("./assets/fonts/YourFontFile.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --bg-color: #ffffff;
   --error-text-color: #e53935;
@@ -9,6 +17,7 @@
   --transition-speed: 0.25s;
   --focus-ring: 0 0 0 3px rgba(53, 116, 226, 0.3);
   --box-shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --header-background-color: #e9e9e9;
 
   --main-color: #007bff;
   --main-text-color: #333;
@@ -19,9 +28,9 @@
 }
 
 body {
+  font-family: "main-font", sans-serif;
   margin: 0 !important;
   background-color: var(--bg-color);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 select {

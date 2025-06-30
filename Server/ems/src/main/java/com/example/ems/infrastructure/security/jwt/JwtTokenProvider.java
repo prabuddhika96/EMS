@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class JwtTokenProvider {
     private String jwtSecret;
 
     @Value("${jwt.expirationMs}")
-    private int jwtExpirationMs;
+    private String jwtExpirationMs;
 
     private final UserRepository userRepository;
 
@@ -54,11 +55,13 @@ public class JwtTokenProvider {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails ){
+        Date currentDate = new Date();
+        Date expireDate = Date.from(Instant.ofEpochMilli(currentDate.getTime() + Long.parseLong(jwtExpirationMs)));
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .setExpiration(expireDate)
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

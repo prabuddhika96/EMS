@@ -1,6 +1,5 @@
 .profile-detail-container {
   padding: 10px;
-  font-family: sans-serif;
   color: #1f2937;
   /* height: calc(100vh - 90px); */
   /* overflow-y: scroll; */
@@ -48,5 +47,125 @@
 
   .profile-meta p {
     margin: 1rem 0;
+  }
+}
+
+/* Material UI-like Profile Page Styles */
+
+.profile-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f5f6fa;
+  min-height: 100vh;
+  padding: 32px 8px;
+}
+
+.profile-card {
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(60, 60, 60, 0.1),
+    0 1.5px 4px rgba(60, 60, 60, 0.08);
+  border-radius: 16px;
+  padding: 32px 40px 24px 40px;
+  margin-bottom: 32px;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.profile-title-mui {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #212121;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.profile-meta-grid-mui {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  margin-bottom: 8px;
+}
+
+.profile-meta-mui p {
+  margin: 0.5rem 0;
+  font-size: 1.08rem;
+  color: #616161;
+  line-height: 1.6;
+}
+
+.profile-section-mui {
+  width: 100%;
+}
+
+.profile-no-events {
+  /* width: 100%;
+  text-align: center;
+  color: #555555;
+  font-size: 1.1rem;
+  padding: 24px 0 12px 0; */
+}
+
+.profile-header-row-mui {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.profile-header-info-mui {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
+
+.profile-avatar-mui {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1976d2 60%, #42a5f5 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(60, 60, 60, 0.1);
+  margin: 0;
+  letter-spacing: 1px;
+  user-select: none;
+}
+
+@media (max-width: 600px) {
+  .profile-header-row-mui {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .profile-avatar-mui {
+    margin-bottom: 6px;
+  }
+  .profile-header-info-mui {
+    align-items: center;
+    text-align: center;
+  }
+  .profile-card {
+    width: 75%;
+  }
+
+  .profile-avatar-mui {
+    width: 100px;
+    height: 100px;
+    font-size: 2rem;
+  }
+  .profile-title-mui {
+    font-size: 1.7rem;
   }
 }

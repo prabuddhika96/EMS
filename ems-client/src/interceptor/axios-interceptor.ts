@@ -29,7 +29,12 @@ axiosInstance.interceptors.response.use(
         } else if (error.response.status === 403) {
             originalRequest._retry = true;
 
+            console.log(error.response?.request)
+            debugger
             if (!error.response?.request?.responseURL.startsWith(loginRequestUrl)) {
+                window.location.href = RouteName.Home + "?sessionExpired=true";
+            }
+            else {
                 window.location.href = RouteName.Unauthorized;
             }
 

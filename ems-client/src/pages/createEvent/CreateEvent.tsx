@@ -130,6 +130,7 @@ function CreateEvent() {
             <label>Title</label>
             <input
               type="text"
+              placeholder="Enter title"
               value={formData.title}
               onChange={(e) => handleChnage("title", e.target.value)}
             />
@@ -140,6 +141,7 @@ function CreateEvent() {
           <div className="create-event-field">
             <label>Description</label>
             <textarea
+              placeholder="Enter description"
               value={formData.description}
               onChange={(e) => handleChnage("description", e.target.value)}
             />
@@ -152,6 +154,7 @@ function CreateEvent() {
               <label>Start Time</label>
               <input
                 type="datetime-local"
+                placeholder="Enter start time"
                 value={formData.startTime}
                 onChange={(e) => handleChnage("startTime", e.target.value)}
               />
@@ -163,6 +166,7 @@ function CreateEvent() {
               <label>End Time</label>
               <input
                 type="datetime-local"
+                placeholder="Enter end time"
                 value={formData.endTime}
                 onChange={(e) => handleChnage("endTime", e.target.value)}
               />
@@ -176,6 +180,7 @@ function CreateEvent() {
               <label>Location</label>
               <input
                 type="text"
+                placeholder="Enter location"
                 value={formData.location}
                 onChange={(e) => handleChnage("location", e.target.value)}
               />

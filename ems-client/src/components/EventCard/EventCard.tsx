@@ -9,35 +9,35 @@ interface Props {
 function EventCard({ event, onClick }: Props) {
   return (
     <div
-      className="event-card"
+      className="event-card stylish-card"
       onClick={() => {
         if (onClick) {
           onClick(event?.id);
         }
       }}
     >
-      <div className="event-header">
-        <h2 className="event-title">{event.title}</h2>
-        <span className={`event-badge ${event.visibility.toLowerCase()}`}>
-          {event.visibility}
-        </span>
-      </div>
-
-      <p className="event-description">{event.description}</p>
-
-      <div className="event-details">
-        <p>
-          <strong>📍 Location:</strong> {event.location}
-        </p>
-        <p>
-          <strong>🕒 Start Time:</strong>{" "}
-          {new Date(event.startTime).toLocaleString()}
-        </p>
-
-        <p>
-          <strong>🕒 End Time:</strong>{" "}
-          {new Date(event.endTime).toLocaleString()}
-        </p>
+      <div className="event-card-content">
+        <div className="event-header">
+          <h2 className="event-title">{event.title}</h2>
+          <span className={`event-badge ${event.visibility.toLowerCase()}`}>
+            {event.visibility}
+          </span>
+        </div>
+        <p className="event-description">{event.description}</p>
+        <div className="event-details">
+          <div className="event-detail-item">
+            <span className="event-detail-icon">📍</span>
+            <span>{event.location}</span>
+          </div>
+          <div className="event-detail-item">
+            <span className="event-detail-icon">🕒</span>
+            <span>{new Date(event.startTime).toLocaleString()}</span>
+          </div>
+          <div className="event-detail-item">
+            <span className="event-detail-icon">🕒</span>
+            <span>{new Date(event.endTime).toLocaleString()}</span>
+          </div>
+        </div>
       </div>
     </div>
   );

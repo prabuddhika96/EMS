@@ -81,6 +81,18 @@ function MainLayout({ children, title, allowedRoles }: Props) {
                 {title && <h2 id="title">{title}</h2>}
               </div>
               <button className="logout-btn" onClick={handleLogout}>
+                <svg
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  style={{ display: "inline", verticalAlign: "middle" }}
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M7.75 3.5A.75.75 0 0 1 8.5 2.75h5A2.75 2.75 0 0 1 16.25 5.5v9A2.75 2.75 0 0 1 13.5 17.25h-5a.75.75 0 0 1 0-1.5h5A1.25 1.25 0 0 0 14.75 14.5v-9A1.25 1.25 0 0 0 13.5 4.25h-5a.75.75 0 0 1-.75-.75zM3.22 10.53a.75.75 0 0 1 0-1.06l2.72-2.72a.75.75 0 1 1 1.06 1.06l-1.19 1.19h5.44a.75.75 0 0 1 0 1.5H5.81l1.19 1.19a.75.75 0 1 1-1.06 1.06l-2.72-2.72z"
+                    clipRule="evenodd"
+                  />
+                </svg>
                 Logout
               </button>
             </div>
