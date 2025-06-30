@@ -27,7 +27,7 @@
   background-color: #1e40af;
 }
 
-.dashboard-filter-header-right input[type="datetime-local"],
+/* .dashboard-filter-header-right input[type="datetime-local"],
 .dashboard-filter-header-right select {
   padding: 5px 12px;
   border: 1px solid var(--main-text-color, #ccc);
@@ -44,7 +44,7 @@
 .dashboard-filter-header-right select:focus {
   border-color: var(--main-color, #2563eb);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
-}
+} */
 
 @media (max-width: 1000px) {
   .dashboard-filter-header {

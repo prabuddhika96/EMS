@@ -11,6 +11,7 @@ const EventDetail = lazy(() => import("../pages/EventDetail/EventDetail"));
 const Profile = lazy(() => import("../pages/profile/Profile"));
 const CreateEvent = lazy(() => import("../pages/createEvent/CreateEvent"));
 const Unauthorized = lazy(() => import("../pages/Unauthorized/Unauthorized "));
+const UserList = lazy(() => import("../pages/UserList/UserList"));
 const NotFound = lazy(() => import("../pages/NotFound/NotFound"));
 const PrivateEvents = lazy(
   () => import("../pages/privateEvents/PrivateEvents")
@@ -79,6 +80,17 @@ function AppRoute() {
                 children={<Unauthorized />}
                 title={"Unauthorized"}
                 allowedRoles={["ADMIN", "USER"]}
+              />
+            }
+          />
+
+          <Route
+            path={RouteName.UserList}
+            element={
+              <MainLayout
+                children={<UserList />}
+                title={"UserList"}
+                allowedRoles={["ADMIN"]}
               />
             }
           />

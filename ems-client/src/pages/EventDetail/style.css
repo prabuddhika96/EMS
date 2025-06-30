@@ -38,21 +38,7 @@
 }
 
 .event-meta select {
-  padding: 5px 12px;
-  border: 1px solid var(--main-text-color, #ccc);
-  border-radius: 4px;
-  font-size: 1rem;
-  color: var(--main-text-color, #333);
-  background-color: #fff;
-  outline: none;
-  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  min-width: 180px;
   margin-left: 10px;
-}
-
-.event-meta select:focus {
-  border-color: var(--main-color, #2563eb);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
 }
 
 .delete-btn-btn {

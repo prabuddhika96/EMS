@@ -13,13 +13,14 @@ import "./style.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { authService } from "../../service/authService";
 import { logoutUser } from "../../redux/slice/userSlice";
+import ProtectedRoutes from "../../routes/ProtectedRoutes";
 
 interface Props {
   children: ReactNode;
   title?: string;
   allowedRoles: ("ADMIN" | "USER")[];
 }
-function MainLayout({ children, title }: Props) {
+function MainLayout({ children, title, allowedRoles }: Props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const loggedUser: User = useSelector((state: RootState) => state.user);
@@ -84,7 +85,14 @@ function MainLayout({ children, title }: Props) {
               </button>
             </div>
 
-            <div>{children}</div>
+            <ProtectedRoutes
+              allowedRoles={allowedRoles}
+              loggedUserRole={loggedUser?.role ? loggedUser?.role : "USER"}
+            >
+              <div className="w-[calc(100vw-244px)] b-green-500 max-sm:w-full min-h-[calc(100vh-1rem)] p-2">
+                {children}
+              </div>
+            </ProtectedRoutes>
           </div>
         </div>
       )}

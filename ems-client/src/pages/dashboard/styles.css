@@ -40,8 +40,7 @@
   min-width: 180px;
 }
 
-.dashboard-filter-header-right input[type="datetime-local"]:focus,
-.dashboard-filter-header-right select:focus {
+select:focus {
   border-color: var(--main-color, #2563eb);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
 }

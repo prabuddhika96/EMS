@@ -1,0 +1,10 @@
+.user-list-container {
+  padding: 10px;
+  font-family: sans-serif;
+  color: #1f2937;
+  height: calc(100vh - 90px);
+  overflow-y: scroll;
+}
+
+.user-list-select {
+}

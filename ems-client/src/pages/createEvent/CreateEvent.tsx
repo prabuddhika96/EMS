@@ -109,6 +109,11 @@ function CreateEvent() {
             type: "success",
           });
         }
+
+        const timer = setTimeout(() => {
+          setAlert(null);
+        }, 3000);
+        return () => clearTimeout(timer);
       }
     } catch (error) {}
   };

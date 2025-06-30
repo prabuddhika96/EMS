@@ -124,10 +124,10 @@ function Profile() {
         </div>
       </div>
 
+      <HeaderH2 text={"Hosting Events"} />
       {responseDataHosting?.eventList &&
       responseDataHosting?.eventList?.length > 0 ? (
         <div className="event-container-box">
-          <HeaderH2 text={"Hosting Events"} />
           <GridTemplate
             totalPages={responseDataHosting?.totalPages}
             page={pageHosting}
@@ -158,10 +158,10 @@ function Profile() {
         </p>
       )}
 
+      <HeaderH2 text={"Hosting Events"} />
       {responseDataAttending?.eventList &&
       responseDataAttending?.eventList?.length > 0 ? (
         <div className="event-container-box">
-          <HeaderH2 text={"Hosting Events"} />
           <GridTemplate
             totalPages={responseDataAttending?.totalPages}
             page={pageAttending}

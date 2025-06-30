@@ -228,24 +228,26 @@ function EventDetail() {
             </div>
 
             <div className="event-meta">
-              <p>
-                <strong>Status:</strong>
+              {loggedUser?.id != event?.id && (
+                <p>
+                  <strong>Status:</strong>
 
-                <select
-                  value={status}
-                  onChange={(e) => {
-                    handleStatus(e?.target?.value);
-                  }}
-                  disabled={loading}
-                >
-                  <option value="" disabled>
-                    Select Status
-                  </option>
-                  <option value="GOING">GOING</option>
-                  <option value="MAYBE">MAYBE</option>
-                  <option value="DECLINED">DECLINED</option>
-                </select>
-              </p>
+                  <select
+                    value={status}
+                    onChange={(e) => {
+                      handleStatus(e?.target?.value);
+                    }}
+                    disabled={loading}
+                  >
+                    <option value="" disabled>
+                      Select Status
+                    </option>
+                    <option value="GOING">GOING</option>
+                    <option value="MAYBE">MAYBE</option>
+                    <option value="DECLINED">DECLINED</option>
+                  </select>
+                </p>
+              )}
 
               {(event?.hostId == loggedUser?.id ||
                 loggedUser?.role == "ADMIN") && (

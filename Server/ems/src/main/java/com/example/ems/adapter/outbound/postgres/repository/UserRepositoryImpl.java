@@ -9,8 +9,11 @@ import com.example.ems.infrastructure.constant.executioncode.CommonExecutionCode
 import com.example.ems.infrastructure.constant.executioncode.UserExecutionCode;
 import com.example.ems.infrastructure.exceptions.CommonException;
 import com.example.ems.infrastructure.exceptions.UserException;
+import com.example.ems.infrastructure.mapper.UserMapper;
 import com.example.ems.infrastructure.utli.LoggingUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -75,4 +78,48 @@ public class UserRepositoryImpl implements UserRepository {
             throw new CommonException(CommonExecutionCode.SOMETHING_WENT_WRONG );
         }
     }
+
+    @Override
+    public Page<User> getUserList(Pageable pageable) {
+        try{
+            Page<UserEntity> userEntityPage = jpaUserRepository.findAll(pageable);
+            return userEntityPage.map(UserMapper::toUser);
+        } catch (UserException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            logger.error("Error occurred while saving user: " + e.getMessage());
+            throw new CommonException(CommonExecutionCode.SOMETHING_WENT_WRONG );
+        }
+
+    }
+
+    @Override
+    public String changeUserRole(UUID userId, String newRole) {
+        try {
+            UserEntity userEntity = jpaUserRepository.findById(userId)
+                    .orElseThrow(() -> new UserException(UserExecutionCode.USER_NOT_FOUND));
+
+            UserRole roleEnum;
+            try {
+                roleEnum = UserRole.valueOf(newRole.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new UserException(UserExecutionCode.INVALID_ROLE);
+            }
+
+            userEntity.setId(userId);
+            userEntity.setRole(roleEnum);
+            userEntity.setUpdatedAt(Instant.now());
+
+            jpaUserRepository.save(userEntity);
+
+            return "User role changed to " + newRole;
+        } catch (UserException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error occurred while changing user role: " + e.getMessage());
+            throw new CommonException(CommonExecutionCode.SOMETHING_WENT_WRONG);
+        }
+    }
+
 }

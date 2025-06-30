@@ -110,7 +110,7 @@ public class EventController {
         }
 
         if (events.isEmpty()) {
-            return ApiCommonResponse.create(EventExecutionCode.NO_EVENTS_FOUND, Page.empty());
+            return ApiCommonResponse.create(EventExecutionCode.EVENT_LIST_EMPTY, Page.empty());
         } else {
             return ApiCommonResponse.create(EventExecutionCode.EVENT_LIST_FETCHED_SUCCESS, events);
         }
