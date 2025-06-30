@@ -3,7 +3,6 @@ package com.example.ems.application.service.impl;
 import com.example.ems.application.dto.response.AttendingUserResponse;
 import com.example.ems.application.repository.AttendanceRepository;
 import com.example.ems.application.service.AttendanceService;
-import com.example.ems.domain.model.User;
 import com.example.ems.infrastructure.constant.enums.AttendenceStatus;
 import com.example.ems.infrastructure.utli.LoggingUtil;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
