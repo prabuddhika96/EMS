@@ -258,5 +258,4 @@ public class EventRepositoryImpl implements EventRepository {
         }
         return existing;
     }
-
 }

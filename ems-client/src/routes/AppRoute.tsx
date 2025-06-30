@@ -10,6 +10,8 @@ const Dashboard = lazy(() => import("../pages/dashboard/Dashboard"));
 const EventDetail = lazy(() => import("../pages/EventDetail/EventDetail"));
 const Profile = lazy(() => import("../pages/profile/Profile"));
 const CreateEvent = lazy(() => import("../pages/createEvent/CreateEvent"));
+const Unauthorized = lazy(() => import("../pages/Unauthorized/Unauthorized "));
+const NotFound = lazy(() => import("../pages/NotFound/NotFound"));
 const PrivateEvents = lazy(
   () => import("../pages/privateEvents/PrivateEvents")
 );
@@ -29,28 +31,55 @@ function AppRoute() {
           <Route
             path={RouteName.Dashboard}
             element={
-              <MainLayout children={<Dashboard />} title={"Dashboard"} />
+              <MainLayout
+                children={<Dashboard />}
+                title={"Dashboard"}
+                allowedRoles={["ADMIN", "USER"]}
+              />
             }
           />
 
           <Route
             path={RouteName.EventDetails}
             element={
-              <MainLayout children={<EventDetail />} title={"Event Details"} />
+              <MainLayout
+                children={<EventDetail />}
+                title={"Event Details"}
+                allowedRoles={["ADMIN", "USER"]}
+              />
             }
           />
 
           <Route
             path={RouteName.Profile}
             element={
-              <MainLayout children={<Profile />} title={"User Profile"} />
+              <MainLayout
+                children={<Profile />}
+                title={"User Profile"}
+                allowedRoles={["ADMIN", "USER"]}
+              />
             }
           />
 
           <Route
             path={RouteName.CreateEvent}
             element={
-              <MainLayout children={<CreateEvent />} title={"Create Event"} />
+              <MainLayout
+                children={<CreateEvent />}
+                title={"Create Event"}
+                allowedRoles={["ADMIN", "USER"]}
+              />
+            }
+          />
+
+          <Route
+            path={RouteName.Unauthorized}
+            element={
+              <MainLayout
+                children={<Unauthorized />}
+                title={"Unauthorized"}
+                allowedRoles={["ADMIN", "USER"]}
+              />
             }
           />
 
@@ -60,6 +89,30 @@ function AppRoute() {
               <MainLayout
                 children={<PrivateEvents />}
                 title={"Private Events"}
+                allowedRoles={["ADMIN", "USER"]}
+              />
+            }
+          />
+
+          <Route
+            path={RouteName.UpdateEvent}
+            element={
+              <MainLayout
+                children={<CreateEvent />}
+                title={"Update Events"}
+                allowedRoles={["ADMIN", "USER"]}
+              />
+            }
+          />
+
+          {/* not fond page */}
+          <Route
+            path="*"
+            element={
+              <MainLayout
+                children={<NotFound />}
+                title="Page Not Found"
+                allowedRoles={["ADMIN", "USER"]}
               />
             }
           />

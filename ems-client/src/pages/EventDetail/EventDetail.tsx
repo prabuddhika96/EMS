@@ -192,6 +192,10 @@ function EventDetail() {
     }
   };
 
+  const handleUpdateEvent = () => {
+    navigate(RouteName.UpdateEvent.replace(":id", id));
+  };
+
   return (
     <div className="event-detail-container">
       {event && (
@@ -243,7 +247,19 @@ function EventDetail() {
                 </select>
               </p>
 
-              {event?.hostId == loggedUser?.id && (
+              {(event?.hostId == loggedUser?.id ||
+                loggedUser?.role == "ADMIN") && (
+                <button
+                  className="delete-btn-btn"
+                  id="update-btn"
+                  onClick={handleUpdateEvent}
+                >
+                  Update Event
+                </button>
+              )}
+
+              {(event?.hostId == loggedUser?.id ||
+                loggedUser?.role == "ADMIN") && (
                 <button className="delete-btn-btn" onClick={handleDeleteEvent}>
                   Delete Event
                 </button>

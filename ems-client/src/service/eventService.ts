@@ -82,6 +82,24 @@ const createEvent = async (formdata: CreateEventForm) => {
     }
 }
 
+const updateEvent = async (formdata: CreateEventForm, eventId: string) => {
+    try {
+        let url = servicePath + `/update/${eventId}`
+
+
+        const response = await axiosInstance.put(url, formdata);
+        return {
+            message: "",
+            data: response.data
+        };
+    } catch (err: any) {
+        return {
+            data: null,
+            message: err.response?.data?.message || err.message || "Fetch failed",
+        };
+    }
+}
+
 const getEventHostList = async (visibility: string = "PUBLIC") => {
     try {
         let url = servicePath + `/hosts?visibility=${visibility}`
@@ -153,5 +171,5 @@ const deleteEvent = async (eventId: string) => {
 }
 
 export const eventService = {
-    getAllUpcomingEvents, getEventById, fetchEventsByType, createEvent, getEventHostList, filterEvents, deleteEvent
+    getAllUpcomingEvents, getEventById, fetchEventsByType, createEvent, getEventHostList, filterEvents, deleteEvent, updateEvent
 }

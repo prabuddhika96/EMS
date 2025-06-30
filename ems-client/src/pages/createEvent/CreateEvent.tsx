@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { CreateEventForm } from "../../interface/Form";
 import "./style.css";
 import { validateCreateEventForm } from "../../util/validation";
@@ -6,6 +6,7 @@ import { eventService } from "../../service/eventService";
 import type { IAlert } from "../../interface/Alert";
 import Alert from "../../components/Alert/Alert";
 import { convertToCleanUTCISOString } from "../../util/time-utils";
+import { useParams } from "react-router-dom";
 
 export const initialState: CreateEventForm = {
   title: "",
@@ -17,9 +18,32 @@ export const initialState: CreateEventForm = {
 };
 
 function CreateEvent() {
+  const { id }: any = useParams();
   const [formData, setFormData] = useState<CreateEventForm>(initialState);
   const [errors, setErrors] = useState<CreateEventForm>(initialState);
   const [alert, setAlert] = useState<IAlert | null>(null);
+
+  const fetchEvent = async (eventId: string) => {
+    try {
+      const apiResponse: any = await eventService.getEventById(eventId);
+
+      if (apiResponse instanceof Error) {
+        console.error("Failed to retrieve data:", apiResponse.message);
+      } else {
+        if (apiResponse?.data?.code === 3003) {
+          setFormData(apiResponse?.data?.data);
+        }
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      fetchEvent(id);
+    }
+  }, [id]);
 
   const handleChnage = (name: keyof CreateEventForm, value: string) => {
     console.log(name, value);
@@ -52,7 +76,19 @@ function CreateEvent() {
         visibility:
           formData.visibility == null ? "PUBLIC" : formData.visibility,
       };
-      const apiResponse: any = await eventService.createEvent(payload);
+      let apiResponse: any = null;
+      if (id) {
+        apiResponse = await eventService.updateEvent(payload, id);
+      } else {
+        apiResponse = await eventService.createEvent(payload);
+      }
+      if (apiResponse == null) {
+        setAlert({
+          message: "An unknown error occurred.",
+          type: "error",
+        });
+        return;
+      }
       if (apiResponse instanceof Error) {
         console.error("Failed to retrieve data:", apiResponse.message);
         setAlert({
@@ -67,6 +103,11 @@ function CreateEvent() {
             message: apiResponse?.data?.message || "Event created successfully",
             type: "success",
           });
+        } else if (apiResponse?.data?.code == 3001) {
+          setAlert({
+            message: apiResponse?.data?.message || "Event updated successfully",
+            type: "success",
+          });
         }
       }
     } catch (error) {}
@@ -75,7 +116,7 @@ function CreateEvent() {
   return (
     <div>
       <div className="create-event-container">
-        <h2>Create Event</h2>
+        <h2> {id ? `Update Event` : `Create Event`}</h2>
         {alert && <Alert alert={alert} />}
 
         <form onSubmit={handleSubmit}>
@@ -154,7 +195,7 @@ function CreateEvent() {
           </div>
 
           <button type="submit" className="create-event-button">
-            Create Event
+            {id ? `Update Event` : `Create Event`}
           </button>
         </form>
       </div>

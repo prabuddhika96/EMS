@@ -17,6 +17,7 @@ import { logoutUser } from "../../redux/slice/userSlice";
 interface Props {
   children: ReactNode;
   title?: string;
+  allowedRoles: ("ADMIN" | "USER")[];
 }
 function MainLayout({ children, title }: Props) {
   const dispatch = useDispatch();
@@ -65,7 +66,11 @@ function MainLayout({ children, title }: Props) {
               open ? `main-layout-sidebar-open` : `main-layout-sidebar-close`
             } main-layout-sidebar`}
           >
-            <Sidebar isOpen={open} toggleDrawer={toggleDrawer} />
+            <Sidebar
+              isOpen={open}
+              toggleDrawer={toggleDrawer}
+              loggedUser={loggedUser}
+            />
           </div>
 
           <div className="main-layout-children">

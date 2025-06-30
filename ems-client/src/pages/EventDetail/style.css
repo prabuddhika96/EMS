@@ -70,6 +70,15 @@
   background-color: #b40101;
 }
 
+#update-btn {
+  margin-right: 10px;
+  background-color: var(--main-color);
+}
+
+#update-btn:hover {
+  background-color: #1e40af;
+}
+
 @media (max-width: 768px) {
   .event-meta-grid {
     gap: 0rem;
@@ -78,5 +87,9 @@
 
   .event-meta p {
     margin: 1rem 0;
+  }
+
+  #update-btn {
+    margin-right: 0px;
   }
 }

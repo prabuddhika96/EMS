@@ -4,5 +4,8 @@ export const RouteName = {
     Profile: '/profile',
     EventDetails: '/event-details/:id',
     CreateEvent: '/create-event',
-    PrivateEvent: '/private-event'
+    UpdateEvent: '/update-event/:id',
+    PrivateEvent: '/private-event',
+    UserList: '/user-list',
+    Unauthorized: '/unauthorized'
 }
