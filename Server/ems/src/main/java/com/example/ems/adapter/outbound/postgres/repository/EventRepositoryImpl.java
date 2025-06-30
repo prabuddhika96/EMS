@@ -72,21 +72,12 @@ public class EventRepositoryImpl implements EventRepository {
     }
 
     @Override
-    public Event updateEvent(UUID eventId, CreateEventRequest updateRequest, CustomUserDetails currentUser) {
+    public Event updateEvent(UUID eventId, CreateEventRequest updateRequest, CustomUserDetails currentUser, UUID hostId) {
         try {
             logger.info("Updating event with ID: " + eventId + " by user: " + currentUser.getUsername());
 
-            EventEntity event = springDataEventRepository.findById(eventId)
-                    .orElseThrow(() -> new EventException(EventExecutionCode.EVENT_NOT_FOUND));
-
-            UUID hostId = event.getId();
-            if (!hostId.equals(currentUser.getUserId()) && !currentUser.isAdmin()) {
-                logger.error("User not authorized to update this event");
-                throw new EventException(EventExecutionCode.EVENT_ACTION_NOT_ALLOWED);
-            }
-
-            EventEntity existing = getEventEntity(eventId, currentUser, "update");
-
+            EventEntity existing = new EventEntity();
+            existing.setId(eventId);
             existing.setTitle(updateRequest.title());
             existing.setDescription(updateRequest.description());
             existing.setStartTime(updateRequest.startTime());
@@ -94,6 +85,9 @@ public class EventRepositoryImpl implements EventRepository {
             existing.setLocation(updateRequest.location());
             existing.setVisibility(updateRequest.visibility());
             existing.setUpdatedAt(Instant.now());
+            existing.setUser(UserEntity.builder()
+                    .id(hostId)
+                    .build());
 
             EventEntity saved = springDataEventRepository.save(existing);
             return toDomain(saved);
@@ -106,25 +100,12 @@ public class EventRepositoryImpl implements EventRepository {
         }
     }
 
-
-
     @Override
     public void deleteEvent(UUID eventId, CustomUserDetails currentUser) {
         try {
             logger.info("Deleting event with ID: " + eventId + " by user: " + currentUser.getUsername());
 
-            EventEntity event = springDataEventRepository.findById(eventId)
-                    .orElseThrow(() -> new EventException(EventExecutionCode.EVENT_NOT_FOUND));
-
-            UUID hostId = event.getId();
-            if (!hostId.equals(currentUser.getUserId()) && !currentUser.isAdmin()) {
-                logger.error("User not authorized to delete this event");
-                throw new EventException(EventExecutionCode.EVENT_ACTION_NOT_ALLOWED);
-            }
-
-            EventEntity eventEntity = getEventEntity(eventId, currentUser, "delete");
-
-            springDataEventRepository.delete(eventEntity);
+            springDataEventRepository.deleteById(eventId);
             logger.info("Event deleted successfully: " + eventId);
         } catch (EventException e) {
             throw e;
@@ -244,18 +225,5 @@ public class EventRepositoryImpl implements EventRepository {
         }
     }
 
-    private EventEntity getEventEntity(UUID eventId, CustomUserDetails currentUser, String action) {
-        EventEntity existing = springDataEventRepository.findById(eventId)
-                .orElseThrow(() -> new EventException(EventExecutionCode.EVENT_NOT_FOUND));
 
-        boolean isHost = existing.getUser().getId().equals(currentUser.getUserId());
-        boolean isAdmin = currentUser.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
-
-        if (!isHost && !isAdmin) {
-            logger.error("User: " + currentUser.getUsername() + " is not authorized to " + action + " event with ID: " + eventId);
-            throw new EventException(EventExecutionCode.EVENT_UPDATE_FORBIDDEN);
-        }
-        return existing;
-    }
 }

@@ -7,6 +7,8 @@ import com.example.ems.application.service.EventService;
 import com.example.ems.domain.model.Event;
 import com.example.ems.domain.model.User;
 import com.example.ems.infrastructure.constant.enums.EventVisibility;
+import com.example.ems.infrastructure.constant.executioncode.EventExecutionCode;
+import com.example.ems.infrastructure.exceptions.EventException;
 import com.example.ems.infrastructure.security.userdetails.CustomUserDetails;
 import com.example.ems.infrastructure.utli.LoggingUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,14 +33,38 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event updateEvent(UUID eventId, CreateEventRequest updateRequest, CustomUserDetails currentUser) {
-        logger.info("Updating event with ID: " + eventId);
-        return eventRepository.updateEvent(eventId, updateRequest, currentUser);
+        try {
+            logger.info("Updating event with ID: " + eventId);
+
+            Event event = eventRepository.getEventById(eventId);
+
+            getEventEntity(event, currentUser, "update");
+
+            return eventRepository.updateEvent(eventId, updateRequest, currentUser, event.getHostId());
+        }catch (EventException e){
+            throw e;
+        }catch (Exception e) {
+            logger.error("Error updating event: " + e.getMessage());
+            throw new EventException(EventExecutionCode.EVENT_UPDATE_FAILED);
+        }
     }
 
     @Override
     public void deleteEvent(UUID eventId, CustomUserDetails currentUser) {
-        logger.info("Deleting event with ID: " + eventId);
-        eventRepository.deleteEvent(eventId, currentUser);
+        try {
+            logger.info("Updating event with ID: " + eventId);
+
+            Event event = eventRepository.getEventById(eventId);
+
+            getEventEntity(event, currentUser, "delete");
+
+            eventRepository.deleteEvent(eventId, currentUser);
+        }catch (EventException e){
+            throw e;
+        }catch (Exception e) {
+            logger.error("Error updating event: " + e.getMessage());
+            throw new EventException(EventExecutionCode.EVENT_UPDATE_FAILED);
+        }
     }
 
     @Override
@@ -70,6 +96,13 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<User> getDistinctHosts(EventVisibility visibility) {
         return eventRepository.getDistinctHosts(visibility);
+    }
+
+    private void getEventEntity(Event event, CustomUserDetails currentUser, String action) {
+        if (!event.getHostId().equals(currentUser.getUserId()) && !currentUser.isAdmin()) {
+            logger.error("User not authorized to "+ action +" this event");
+            throw new EventException(EventExecutionCode.EVENT_ACTION_NOT_ALLOWED);
+        }
     }
 
 }
