@@ -144,6 +144,7 @@ function Dashboard() {
           <label>Start Time</label>
           <input
             type="datetime-local"
+            placeholder="Start Time"
             value={filters.startTime}
             onChange={(e) => {
               handleFilterChnage("startTime", e.target.value);

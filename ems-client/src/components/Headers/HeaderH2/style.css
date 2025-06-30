@@ -1,4 +1,7 @@
 .ems-header-2 {
-  margin: 5px 0 !important;
-  font-size: 25px;
+  margin: 8px 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--main-text-color, #1f2937);
+  line-height: 1.3;
 }

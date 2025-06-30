@@ -29,21 +29,37 @@
 
 .dashboard-filter-header-right input[type="datetime-local"],
 .dashboard-filter-header-right select {
-  padding: 5px 12px;
-  border: 1px solid var(--main-text-color, #ccc);
-  border-radius: 4px;
-  font-size: 1rem;
-  color: var(--main-text-color, #333);
-  background-color: #fff;
-  outline: none;
-  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  min-width: 180px;
+  padding: 8px 14px !important;
+  margin-top: 2px;
 }
 
-select:focus {
-  border-color: var(--main-color, #2563eb);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+/* .dashboard-filter-header-right input[type="datetime-local"],
+.dashboard-filter-header-right select {
+  padding: 8px 14px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  color: var(--main-text-color);
+  background-color: var(--light-gray);
+  box-shadow: var(--box-shadow-light);
+  appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  transition: border-color var(--transition-speed),
+    box-shadow var(--transition-speed);
 }
+
+.dashboard-filter-header-right select:focus {
+  border-color: var(--main-color);
+  box-shadow: var(--focus-ring);
+  outline: none;
+  background-color: #fff;
+}
+
+.dashboard-filter-header-right select option[disabled] {
+  color: #999;
+} */
 
 @media (max-width: 1000px) {
   .dashboard-filter-header {

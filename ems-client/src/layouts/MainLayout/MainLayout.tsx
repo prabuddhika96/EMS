@@ -89,9 +89,7 @@ function MainLayout({ children, title, allowedRoles }: Props) {
               allowedRoles={allowedRoles}
               loggedUserRole={loggedUser?.role ? loggedUser?.role : "USER"}
             >
-              <div className="w-[calc(100vw-244px)] b-green-500 max-sm:w-full min-h-[calc(100vh-1rem)] p-2">
-                {children}
-              </div>
+              <div className="main-children-container">{children}</div>
             </ProtectedRoutes>
           </div>
         </div>
