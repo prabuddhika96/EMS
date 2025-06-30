@@ -39,7 +39,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ApiCommonResponse<AuthResponse>> login() {
+    public ResponseEntity<ApiCommonResponse<AuthResponse>> logout() {
         return ApiCommonResponse.create(AuthExecutionCode.USER_LOGOUT_SUCCESS,
                 authService.logout());
     }
