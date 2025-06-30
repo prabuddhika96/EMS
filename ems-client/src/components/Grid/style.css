@@ -1,6 +1,6 @@
 .grid-container {
-  height: calc(100vh - 145px);
-  overflow-y: scroll;
+  /* height: calc(100vh - 145px); */
+  /* overflow-y: scroll; */
 }
 
 .dashboard-grid {
