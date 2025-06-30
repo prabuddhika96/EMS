@@ -1,38 +1,72 @@
 :root {
   --bg-color: #ffffff;
-  --error-text-color: red;
+  --error-text-color: #e53935;
   --main-color: #3574e2;
-  --main-text-color: black;
-  --light-gray: #f7f7f7;
+  --main-text-color: #1f2937;
+  --light-gray: #f9f9f9;
   --header-color: #93c5fd;
+  --border-radius: 6px;
+  --transition-speed: 0.25s;
+  --focus-ring: 0 0 0 3px rgba(53, 116, 226, 0.3);
+  --box-shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  --main-color: #007bff;
+  --main-text-color: #333;
+  --error-color: #e53935;
+  --input-bg: #f9f9f9;
+  --border-radius: 8px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 body {
-  margin: 0px !important;
+  margin: 0 !important;
   background-color: var(--bg-color);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 select {
-  padding: 5px 12px;
-  border: 1px solid var(--main-text-color, #ccc);
-  border-radius: 4px;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
   font-size: 1rem;
-  color: var(--main-text-color, #333);
-  background-color: #fff;
-  outline: none;
-  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  color: var(--main-text-color);
+  background-color: var(--light-gray);
+  box-shadow: var(--box-shadow-light);
+  appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  transition: border-color var(--transition-speed),
+    box-shadow var(--transition-speed);
 }
 
 select:focus {
-  border-color: var(--main-color, #2563eb);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  border-color: var(--main-color);
+  box-shadow: var(--focus-ring);
+  outline: none;
+  background-color: #fff;
+}
+
+select option[disabled] {
+  color: #999;
 }
 
 input[type="datetime-local"] {
-  min-width: 180px;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  background-color: var(--light-gray);
+  font-size: 1rem;
+  color: var(--main-text-color);
+  box-shadow: var(--box-shadow-light);
+  min-width: 200px;
+  transition: border-color var(--transition-speed),
+    box-shadow var(--transition-speed);
 }
 
 input[type="datetime-local"]:focus {
-  border-color: var(--main-color, #2563eb);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  border-color: var(--main-color);
+  box-shadow: var(--focus-ring);
+  background-color: #fff;
+  outline: none;
 }

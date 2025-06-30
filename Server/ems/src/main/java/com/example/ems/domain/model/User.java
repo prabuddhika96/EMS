@@ -1,6 +1,7 @@
 package com.example.ems.domain.model;
 
 import com.example.ems.infrastructure.constant.enums.UserRole;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class User {
     private UUID id;
     private String name;

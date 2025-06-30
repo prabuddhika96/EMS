@@ -5,12 +5,10 @@ import com.example.ems.adapter.outbound.postgres.entity.EventEntity;
 import com.example.ems.adapter.outbound.postgres.entity.UserEntity;
 import com.example.ems.application.dto.response.AttendingUserResponse;
 import com.example.ems.application.repository.AttendanceRepository;
-import com.example.ems.domain.model.User;
 import com.example.ems.infrastructure.constant.enums.AttendenceStatus;
 import com.example.ems.infrastructure.constant.executioncode.AttendenceExecutionCode;
 import com.example.ems.infrastructure.exceptions.AttendanceException;
 import com.example.ems.infrastructure.utli.LoggingUtil;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,8 +37,6 @@ interface SpringDataAttendanceRepository extends JpaRepository<AttendanceEntity,
     WHERE a.event.id = :eventId
 """)
     Page<AttendingUserResponse> findAttendingUsersByEventId(UUID eventId, Pageable pageable);
-
-
 }
 
 @Repository
@@ -48,7 +44,7 @@ interface SpringDataAttendanceRepository extends JpaRepository<AttendanceEntity,
 public class AttendanceRepositoryImpl implements AttendanceRepository {
     private final SpringDataAttendanceRepository springDataAttendanceRepository;
     private final LoggingUtil logger;
-    private final EntityManager entityManager;
+    private final static String ERROR_TEXT = "Error while attending event: ";
 
     @Override
     public AttendenceStatus checkEventStatus(UUID eventId, UUID userId) {
@@ -61,7 +57,7 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
         } catch (AttendanceException e) {
             throw e;
         } catch (Exception e) {
-            logger.error("Error while attending event: " + e.getMessage());
+            logger.error(ERROR_TEXT + e.getMessage());
             throw new AttendanceException(AttendenceExecutionCode.ATTENDENCE_CREATION_FAILED);
         }
     }
@@ -69,13 +65,11 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
     @Override
     public void attendEvent(UUID eventId, UUID userId, AttendenceStatus status){
         try {
-            EventEntity event = entityManager.getReference(EventEntity.class, eventId);
-            UserEntity user = entityManager.getReference(UserEntity.class, userId);
-
             Optional<AttendanceEntity> optionalAttendence = springDataAttendanceRepository.findByUserIdAndEventId(userId, eventId);
             if (optionalAttendence.isPresent()) {
                 AttendanceEntity existing = optionalAttendence.get();
                 logger.info(String.format("Updating attendance status for userId: %s and eventId: %s", userId, eventId));
+
                 existing.setStatus(status);
                 existing.setRespondedAt(Instant.now());
                 springDataAttendanceRepository.save(existing);
@@ -83,8 +77,8 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
             }
 
             AttendanceEntity attendance = AttendanceEntity.builder()
-                    .event(event)
-                    .user(user)
+                    .event(EventEntity.builder().id(eventId).build())
+                    .user(UserEntity.builder().id(userId).build())
                     .status(status)
                     .respondedAt(Instant.now())
                     .build();
@@ -93,7 +87,7 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
         } catch (AttendanceException e) {
             throw e;
         } catch (Exception e) {
-            logger.error("Error while attending event: " + e.getMessage());
+            logger.error(ERROR_TEXT + e.getMessage());
             throw new AttendanceException(AttendenceExecutionCode.ATTENDENCE_CREATION_FAILED);
         }
     }
@@ -106,7 +100,7 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
         } catch (AttendanceException e) {
             throw e;
         } catch (Exception e) {
-            logger.error("Error while attending event: " + e.getMessage());
+            logger.error(ERROR_TEXT + e.getMessage());
             throw new AttendanceException(AttendenceExecutionCode.ATTENDENCE_FETCH_FAILED);
         }
     }

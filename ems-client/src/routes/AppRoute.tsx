@@ -89,7 +89,7 @@ function AppRoute() {
             element={
               <MainLayout
                 children={<UserList />}
-                title={"UserList"}
+                title={"User List"}
                 allowedRoles={["ADMIN"]}
               />
             }

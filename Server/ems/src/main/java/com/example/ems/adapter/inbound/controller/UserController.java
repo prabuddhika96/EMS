@@ -10,16 +10,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -50,15 +46,4 @@ public class UserController {
     ) {
         return ApiCommonResponse.create(UserExecutionCode.USER_ROLE_CHANGED_SUCCESS, userService.changeUserRole(userId, newRole));
     }
-
-//    @GetMapping("/api/v1/user/profile")
-//    @PreAuthorize("isAuthenticated()")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public String getUserProfile(@AuthenticationPrincipal UserDetails userDetails) {
-//        // Access authenticated user's email (username)
-//        String email = userDetails.getUsername();
-//
-//        // Return a simple greeting message
-//        return "Hello, authenticated user with email: " + email;
-//    }
 }

@@ -24,6 +24,11 @@
   margin-left: 80px;
 }
 
+.main-children-container {
+  height: calc(100vh - 70px);
+  overflow-y: scroll;
+}
+
 .main-layout-children-header {
   display: flex;
   justify-content: space-between;

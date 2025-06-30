@@ -119,10 +119,12 @@ function UserList() {
 
       {roleUpdateAlert && <Alert alert={roleUpdateAlert} />}
 
-      <UserListTable
-        userList={responseData?.userList ?? []}
-        changeUserRole={changeUserRole}
-      />
+      <div className="user-table-container">
+        <UserListTable
+          userList={responseData?.userList ?? []}
+          changeUserRole={changeUserRole}
+        />
+      </div>
 
       {responseData?.userList && responseData.userList?.length > 0 && (
         <>

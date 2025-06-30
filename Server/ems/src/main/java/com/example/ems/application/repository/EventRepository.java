@@ -15,7 +15,7 @@ import java.util.UUID;
 public interface EventRepository {
     Event createEvent(CreateEventRequest createEventRequest, CustomUserDetails currentUser);
 
-    Event updateEvent(UUID eventId, CreateEventRequest updateRequest, CustomUserDetails currentUser);
+    Event updateEvent(UUID eventId, CreateEventRequest updateRequest, CustomUserDetails currentUser, UUID hostId);
 
     void deleteEvent(UUID eventId, CustomUserDetails currentUser);
 
