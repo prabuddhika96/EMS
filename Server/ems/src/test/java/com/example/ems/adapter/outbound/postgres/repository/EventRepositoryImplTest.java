@@ -99,7 +99,7 @@ class EventRepositoryImplTest {
         EventEntity event = new EventEntity();
         event.setUser(UserEntity.builder().id(UUID.randomUUID()).build());
 
-        when(springDataEventRepository.findById(eventId)).thenReturn(Optional.of(event));
+        when(springDataEventRepository.findByIdAndIsDeletedFalse(eventId)).thenReturn(Optional.of(event));
         when(user.getUserId()).thenReturn(UUID.randomUUID());
         when(user.isAdmin()).thenReturn(false);
 
@@ -129,7 +129,7 @@ class EventRepositoryImplTest {
         EventEntity entity = new EventEntity();
         Page<EventEntity> page = new PageImpl<>(List.of(entity));
 
-        when(springDataEventRepository.findByStartTimeAfterAndVisibility(any(), eq(EventVisibility.PUBLIC), eq(pageable)))
+        when(springDataEventRepository.findByStartTimeAfterAndVisibilityAndIsDeletedFalse(any(), eq(EventVisibility.PUBLIC), eq(pageable)))
                 .thenReturn(page);
 
         Page<Event> result = eventRepository.findUpcomingEvents(pageable);
@@ -142,7 +142,7 @@ class EventRepositoryImplTest {
         Pageable pageable = PageRequest.of(0, 10);
         Page<EventEntity> page = new PageImpl<>(List.of(new EventEntity()));
 
-        when(springDataEventRepository.findByUserId(userId, pageable)).thenReturn(page);
+        when(springDataEventRepository.findByUserIdAndIsDeletedFalse(userId, pageable)).thenReturn(page);
 
         Page<Event> result = eventRepository.findEventsHostedByUser(userId, pageable);
         assertThat(result.getContent()).hasSize(1);
@@ -164,7 +164,7 @@ class EventRepositoryImplTest {
     void testGetEventById_Success() {
         UUID eventId = UUID.randomUUID();
         EventEntity entity = new EventEntity();
-        when(springDataEventRepository.findById(eventId)).thenReturn(Optional.of(entity));
+        when(springDataEventRepository.findByIdAndIsDeletedFalse(eventId)).thenReturn(Optional.of(entity));
 
         Event event = eventRepository.getEventById(eventId);
         assertThat(event).isNotNull();

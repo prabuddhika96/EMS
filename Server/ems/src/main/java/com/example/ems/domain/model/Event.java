@@ -22,6 +22,7 @@ public class Event {
     private Instant endTime;
     private String location;
     private EventVisibility visibility;
+    private Boolean isDeleted;
     private Instant createdAt;
     private Instant updatedAt;
 }

@@ -22,9 +22,10 @@ public class EventMapper {
         event.setVisibility(entity.getVisibility());
         event.setCreatedAt(entity.getCreatedAt());
         event.setUpdatedAt(entity.getUpdatedAt());
+        event.setIsDeleted(entity.getIsDeleted());
 
         if (entity.getUser() != null) {
-            event.setHostId(entity.getUser().getId()); // Host = user
+            event.setHostId(entity.getUser().getId());
         }
 
         return event;
@@ -41,6 +42,7 @@ public class EventMapper {
         entity.setVisibility(domain.getVisibility());
         entity.setCreatedAt(domain.getCreatedAt());
         entity.setUpdatedAt(domain.getUpdatedAt());
+        entity.setIsDeleted(domain.getIsDeleted());
         return entity;
     }
 
@@ -54,6 +56,7 @@ public class EventMapper {
                 .visibility(createEventRequest.visibility())
                 .createdAt(Instant.now())
                 .updatedAt(Instant.now())
+                .isDeleted(false)
                 .build();
     }
 }

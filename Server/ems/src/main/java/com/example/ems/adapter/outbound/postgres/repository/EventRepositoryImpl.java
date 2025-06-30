@@ -35,9 +35,16 @@ import static com.example.ems.infrastructure.mapper.EventMapper.toDomain;
 interface SpringDataEventRepository extends JpaRepository<EventEntity, UUID>, JpaSpecificationExecutor<EventEntity> {
     Page<EventEntity> findByStartTimeAfter(Instant now, Pageable pageable);
     Page<EventEntity> findByStartTimeAfterAndVisibility(Instant now, EventVisibility visibility, Pageable pageable);
-    Page<EventEntity> findByUserId(UUID userId, Pageable pageable);
+    Page<EventEntity> findByUserIdAndIsDeletedFalse(UUID userId, Pageable pageable);
+    Page<EventEntity> findByStartTimeAfterAndVisibilityAndIsDeletedFalse(
+            Instant now,
+            EventVisibility visibility,
+            Pageable pageable
+    );
 
-    @Query("SELECT e FROM EventEntity e JOIN e.attendances a WHERE a.user.id = :userId")
+    Optional<EventEntity> findByIdAndIsDeletedFalse(UUID id);
+
+    @Query("SELECT e FROM EventEntity e JOIN e.attendances a WHERE a.user.id = :userId AND e.isDeleted = false")
     Page<EventEntity> findEventsUserIsAttending(UUID userId, Pageable pageable);
 
     @Query("SELECT DISTINCT e.user FROM EventEntity e WHERE e.visibility = :visibility")
@@ -105,7 +112,14 @@ public class EventRepositoryImpl implements EventRepository {
         try {
             logger.info("Deleting event with ID: " + eventId + " by user: " + currentUser.getUsername());
 
-            springDataEventRepository.deleteById(eventId);
+            EventEntity existing = springDataEventRepository.findById(eventId)
+                    .orElseThrow(() -> new EventException(EventExecutionCode.EVENT_NOT_FOUND));
+
+            existing.setIsDeleted(true);
+            existing.setUpdatedAt(Instant.now());
+
+            springDataEventRepository.save(existing);
+
             logger.info("Event deleted successfully: " + eventId);
         } catch (EventException e) {
             throw e;
@@ -141,6 +155,8 @@ public class EventRepositoryImpl implements EventRepository {
                     predicates.add(cb.equal(root.get("user").get("id"), filterRequest.hostId()));
                 }
 
+                predicates.add(cb.equal(root.get("isDeleted"), Boolean.FALSE));
+
                 return cb.and(predicates.toArray(new Predicate[0]));
             }, pageable);
 
@@ -157,7 +173,7 @@ public class EventRepositoryImpl implements EventRepository {
     public Page<Event> findUpcomingEvents(Pageable pageable) {
         try {
             Instant now = Instant.now();
-            Page<EventEntity> entityPage = springDataEventRepository.findByStartTimeAfterAndVisibility(now, EventVisibility.PUBLIC ,pageable);
+            Page<EventEntity> entityPage = springDataEventRepository.findByStartTimeAfterAndVisibilityAndIsDeletedFalse(now, EventVisibility.PUBLIC ,pageable);
             return entityPage.map(EventMapper::toDomain);
         } catch (EventException e) {
             throw e;
@@ -170,7 +186,7 @@ public class EventRepositoryImpl implements EventRepository {
     @Override
     public Page<Event> findEventsHostedByUser(UUID userId, Pageable pageable) {
         try {
-            Page<EventEntity> entities = springDataEventRepository.findByUserId(userId, pageable);
+            Page<EventEntity> entities = springDataEventRepository.findByUserIdAndIsDeletedFalse(userId, pageable);
             return entities.map(EventMapper::toDomain);
         } catch (EventException e) {
             throw e;
@@ -196,7 +212,7 @@ public class EventRepositoryImpl implements EventRepository {
     @Override
     public Event getEventById(UUID eventId) {
         try {
-            EventEntity eventEntity = springDataEventRepository.findById(eventId)
+            EventEntity eventEntity = springDataEventRepository.findByIdAndIsDeletedFalse(eventId)
                     .orElseThrow(() -> new EventException(EventExecutionCode.EVENT_NOT_FOUND));
 
             return toDomain(eventEntity);
@@ -207,6 +223,7 @@ public class EventRepositoryImpl implements EventRepository {
             throw new EventException(EventExecutionCode.EVENTS_FETCH_FAILED);
         }
     }
+
 
     @Override
     public List<User> getDistinctHosts(EventVisibility visibility) {

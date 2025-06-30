@@ -3,6 +3,7 @@ package com.example.ems.adapter.outbound.postgres.entity;
 import com.example.ems.infrastructure.constant.enums.EventVisibility;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -36,6 +37,9 @@ public class EventEntity {
     private Instant startTime;
     private Instant endTime;
     private String location;
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean isDeleted;
 
     @Enumerated(EnumType.STRING)
     private EventVisibility visibility;
